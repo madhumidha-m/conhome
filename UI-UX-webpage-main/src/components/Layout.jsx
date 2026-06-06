@@ -1,33 +1,56 @@
 import React, { useState } from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet, NavLink } from 'react-router-dom'
 import Sidebar from './Sidebar'
 import styles from './Layout.module.css'
+import {
+  LayoutDashboard, DoorOpen, Lightbulb,
+  Users, Settings
+} from 'lucide-react'
+
+const BOTTOM_NAV = [
+  { to: '/stats',        icon: LayoutDashboard, label: 'Home' },
+  { to: '/rooms',   icon: DoorOpen,        label: 'Rooms' },
+  { to: '/devices', icon: Lightbulb,       label: 'Devices' },
+  { to: '/members', icon: Users,           label: 'Members' },
+  { to: '/settings',icon: Settings,        label: 'Settings' },
+]
 
 export default function Layout() {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [navVisible, setNavVisible] = useState(true)
 
   return (
-    <div className={styles.shell}>
-
-      {/* Mobile top bar */}
-      <div className={styles.topbar}>
-        <button className={styles.menuBtn} onClick={() => setSidebarOpen(o => !o)}>
-          ☰
-        </button>
-        <span className={styles.topbarTitle}>SmartNest</span>
+    <div
+      className={styles.shell}
+      onClick={() => setNavVisible(v => !v)}
+    >
+      {/* Desktop sidebar */}
+      <div className={styles.desktopSidebar}>
+        <Sidebar />
       </div>
 
-      {/* Overlay when sidebar open on mobile */}
-      {sidebarOpen && (
-        <div className={styles.overlay} onClick={() => setSidebarOpen(false)} />
-      )}
-
-      <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-
+      {/* Main content */}
       <main className={styles.main}>
         <Outlet />
       </main>
 
+      {/* Mobile bottom nav */}
+      <nav className={`${styles.bottomNav} ${navVisible ? styles.bottomVisible : styles.bottomHidden}`}>
+        {BOTTOM_NAV.map(({ to, icon: Icon, label }) => (
+       <NavLink
+  key={to}
+  to={to}
+  onClick={e => e.stopPropagation()}
+  className={({ isActive }) =>
+    `${styles.bottomItem} ${isActive ? styles.bottomActive : ''}`
+  }
+>
+  <span className={styles.bottomIcon}>
+    <Icon size={22} />
+  </span>
+  <span className={styles.bottomLabel}>{label}</span>
+</NavLink>
+        ))}
+      </nav>
     </div>
   )
 }

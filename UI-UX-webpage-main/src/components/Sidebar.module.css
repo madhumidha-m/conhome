@@ -1,4 +1,4 @@
-.sidebar {
+/*.sidebar {
   width: var(--sidebar-w);
   height: 100vh;
   display: flex;
@@ -54,17 +54,17 @@
 }
 
 .link:hover {
-  background: rgba(232,114,74,0.08);
+  background: rgba(55, 54, 54, 0.08);
   color: var(--accent);
 }
 
 .link.active {
-  background: linear-gradient(135deg, rgba(232,114,74,0.15), rgba(245,166,35,0.1));
+  background: linear-gradient(135deg, rgba(55, 54, 54, 0.08), rgba(245,166,35,0.1));
   color: var(--accent);
-  box-shadow: 0 2px 8px rgba(232,114,74,0.15);
+  box-shadow: 0 2px 8px rgba(55, 54, 54, 0.08);
 }
 
-.icon { font-size: 18px; width: 22px; text-align: center; }
+.icon { width: 22px; display: flex; align-items: center; justify-content: center; }
 .label { flex: 1; }
 
 .badge {
@@ -105,6 +105,176 @@
   height: 40px;
   object-fit: contain;
 }
+/* Mobile sidebar */
+/*@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    left: -240px;
+    top: 0;
+    height: 100vh;
+    z-index: 99;
+    transition: left 0.3s ease;
+    width: 220px;
+  }
+
+  .sidebarOpen {
+    left: 0 !important;
+  }
+
+  .closeBtn {
+    display: flex;
+    margin-left: auto;
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: var(--text-mid);
+  }
+}
+
+@media (min-width: 769px) {
+  .closeBtn {
+    display: none;
+  }
+}*/
+
+.sidebar {
+  width: var(--sidebar-w);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: rgba(255,255,255,0.78);
+  backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  border-right: 1px solid rgba(255,255,255,0.6);
+  box-shadow: 2px 0 20px rgba(0,0,0,0.06);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 24px 20px 20px;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+.brandIcon { font-size: 28px; }
+
+.brandName {
+  font-family: 'Sora', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-dark);
+  letter-spacing: -0.3px;
+}
+
+.nav {
+  flex: 1;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow-y: auto;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--text-mid);
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.link:hover {
+  background: rgba(55, 54, 54, 0.08);
+  color: #374151;
+}
+
+.link.active {
+  background: linear-gradient(
+    135deg,
+    rgba(55, 54, 54, 0.08),
+    rgba(55, 65, 81, 0.10)
+  );
+  color: #374151;
+  box-shadow: 0 2px 8px rgba(55, 54, 54, 0.08);
+}
+
+.icon {
+  width: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.label {
+  flex: 1;
+}
+
+.badge {
+  background: #374151;
+  color: white;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 7px;
+  min-width: 20px;
+  text-align: center;
+}
+
+.bottom {
+  padding: 16px 12px;
+  border-top: 1px solid rgba(0,0,0,0.06);
+}
+
+.userCard {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.6);
+}
+
+.avatar {
+  font-size: 28px;
+}
+
+.userName {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.logoutBtn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+  padding: 4px;
+}
+
+.logoutBtn:hover {
+  opacity: 1;
+}
+
+.logoImage {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
 /* Mobile sidebar */
 @media (max-width: 768px) {
   .sidebar {

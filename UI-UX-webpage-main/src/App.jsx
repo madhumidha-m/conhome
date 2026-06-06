@@ -1,3 +1,4 @@
+
 import React from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { HomeProvider } from './context/HomeContext'
@@ -12,6 +13,7 @@ import Stats from './pages/Stats'
 import Members from './pages/Members'
 import Settings from './pages/Settings'
 import Notifications from './pages/Notifications'
+import Graphs from './pages/Graphs'
 
 function PrivateRoute({ children }) {
   const { user } = useAuth()
@@ -32,6 +34,7 @@ function AppRoutes() {
         <Route path="stats" element={<Stats />} />
         <Route path="members" element={<Members />} />
         <Route path="settings" element={<Settings />} />
+        <Route path="graphs" element={<Graphs />} />
         <Route path="notifications" element={<Notifications />} />
       </Route>
     </Routes>
