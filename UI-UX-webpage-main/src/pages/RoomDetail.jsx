@@ -48,7 +48,16 @@ const [devType, setDevType] = useState(0)
       <div className={styles.header}>
         <Link to="/rooms" className={styles.back}>← Rooms</Link>
         <div className={styles.titleRow}>
-          <span className={styles.roomIcon}>{room.icon}</span>
+          <span className={styles.roomIcon}>
+  {(() => {
+    const ROOM_ICONS_MAP = {
+      sofa: '🛋️', bed: '🛏️', kitchen: '🍳', shower: '🚿',
+      study: '📚', gym: '🏋️', game: '🎮', garden: '🌿',
+      bath: '🛁', office: '🖥️', garage: '🚗', laundry: '🧺'
+    }
+    return ROOM_ICONS_MAP[room.icon] || room.icon
+  })()}
+</span>
           <div>
             <h1 className={styles.title}>{room.name}</h1>
             <p className={styles.sub}>{room.devices.length} devices · {activeCount} active</p>
@@ -88,11 +97,21 @@ const [devType, setDevType] = useState(0)
             onKeyDown={e => e.key === 'Enter' && handleAdd()}
           />
          <label>Device Number</label>
-<select value={devType} onChange={e => setDevType(e.target.value)}>
-  {[0,1,2,3,4,5,12,13,14,15,16,17,18,19,21,22,23,25,26,27,32,33,34,35].map(pin => (
-    <option key={pin} value={pin}>GPIO {pin}</option>
-  ))}
-</select>
+<input
+  type="number"
+  min="0"
+  max="35"
+  value={devType}
+  onChange={e => setDevType(Number(e.target.value))}
+  style={{
+    width:'100%', padding:'10px 14px',
+    border:'1.5px solid rgba(0,0,0,0.1)',
+    borderRadius:10, fontSize:14,
+    fontFamily:'inherit', outline:'none',
+    background:'#fafafa'
+  }}
+/>
+
           <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
             <button style={{flex:1,padding:'11px',borderRadius:10,border:'none',background:'#f0f0f0',color:'#666',cursor:'pointer',fontFamily:'inherit',fontSize:14,fontWeight:700}} onClick={() => setShowModal(false)}>Cancel</button>
             <button style={{flex:1,padding:'11px',borderRadius:10,border:'none',background:'var(--accent)',color:'white',cursor:'pointer',fontFamily:'inherit',fontSize:14,fontWeight:700}} onClick={handleAdd}>Add Device</button>

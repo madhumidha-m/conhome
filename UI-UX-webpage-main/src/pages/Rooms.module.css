@@ -54,10 +54,20 @@
 
 .iconGrid { display: flex; flex-wrap: wrap; gap: 8px; }
 .iconBtn {
-  width: 40px; height: 40px;
-  border-radius: 10px; border: 1.5px solid rgba(0,0,0,0.08);
-  background: #fafafa; font-size: 20px; cursor: pointer; transition: all 0.15s;
+  width: 64px; height: 64px;
+  border-radius: 12px;
+  border: 1.5px solid rgba(0,0,0,0.08);
+  background: #fafafa;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
 }
+.iconBtn:hover { border-color: #2d6a4f; background: rgba(45,106,79,0.08); }
+.iconSelected { border-color: #2d6a4f !important; background: rgba(45,106,79,0.1) !important; box-shadow: 0 0 0 2px rgba(45,106,79,0.2); }
 .iconBtn:hover { border-color: var(--accent); background: var(--accent-soft); }
 .iconSelected { border-color: var(--accent); background: var(--accent-soft); box-shadow: 0 0 0 2px rgba(232,114,74,0.3); }
 .editRoom {

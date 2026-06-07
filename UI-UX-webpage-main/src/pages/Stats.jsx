@@ -39,7 +39,9 @@ export default function Stats() {
 
   useEffect(() => {
     if (scanOpen) {
-      navigator.mediaDevices.getUserMedia({ video: true })
+      navigator.mediaDevices.getUserMedia({ 
+  video: { facingMode: { ideal: 'environment' } } 
+})
         .then(stream => {
           if (videoRef.current) {
             videoRef.current.srcObject = stream
@@ -72,9 +74,10 @@ export default function Stats() {
         </div>
         <button
           onClick={() => setScanOpen(true)}
-          style={{display:'flex',alignItems:'center',gap:8,padding:'10px 20px',borderRadius:12,border:'none',background:'#9ca3af',color:'white',fontSize:14,fontWeight:700,cursor:'pointer'}}
+          style={{display:'flex',alignItems:'center',gap:8,padding:'10px 20px',borderRadius:12,border:'none',background:'#2d6a4f',color:'white',fontSize:14,fontWeight:700,cursor:'pointer'}}
         >
-          + Add Device
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" style={{marginRight:6}}><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+Add Device
         </button>
       </div>
 
@@ -130,7 +133,7 @@ export default function Stats() {
               style={{
                 padding:'6px 14px', borderRadius:20,
                 border:'1.5px solid rgba(66, 64, 64, 0.3)',
-                background: showMore ? '#9ca3af' : 'transparent',
+                background: showMore ? '#2d6a4f' : 'transparent',
                 color: showMore ? 'white' : '#9ca3af',
                 fontSize:12, fontWeight:700, cursor:'pointer', transition:'all 0.2s'
               }}

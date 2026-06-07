@@ -4,23 +4,83 @@ import { useHome } from '../context/HomeContext'
 import Modal from '../components/Modal'
 import PageHeader from '../components/PageHeader'
 import styles from './Rooms.module.css'
+import {
+  Sofa, BedDouble, ChefHat, Droplets, BookOpen,
+  Dumbbell, Gamepad2, Leaf, Waves, Monitor, Car, Wind, Plus
+} from 'lucide-react'
 
-const ICONS = ['🛋️','🛏️','🍳','🚿','📚','🏋️','🎮','🌿','🛁','🖥️','🚗','🧺']
+const ROOM_ICONS = [
+  { id: 'sofa',    icon: Sofa,      label: 'Living Room' },
+  { id: 'bed',     icon: BedDouble, label: 'Bedroom' },
+  { id: 'kitchen', icon: ChefHat,   label: 'Kitchen' },
+ { id: 'shower', icon: Droplets, label: 'Bathroom' },
+  { id: 'study',   icon: BookOpen,  label: 'Study' },
+  { id: 'gym',     icon: Dumbbell,  label: 'Gym' },
+  { id: 'game',    icon: Gamepad2,  label: 'Game Room' },
+  { id: 'garden',  icon: Leaf,      label: 'Garden' },
+  { id: 'bath',    icon: Waves,      label: 'Bathtub' },
+  { id: 'office',  icon: Monitor,   label: 'Office' },
+  { id: 'garage',  icon: Car,       label: 'Garage' },
+  { id: 'laundry', icon: Wind,      label: 'Laundry' },
+]
+
+const DEVICE_EMOJIS = {
+  light:'💡', ac:'❄️', tv:'📺', fan:'🌀', purifier:'🌬️',
+  speaker:'🔊', lock:'🔒', camera:'📷', vacuum:'🤖', wifi:'📶', other:'🔌'
+}
+  
+
+function RoomIcon({ iconId, size = 36 }) {
+  const found = ROOM_ICONS.find(ri => ri.id === iconId)
+  if (found) {
+    const Icon = found.icon
+    return <Icon size={size} color="#2d6a4f" />
+  }
+  return <span style={{ fontSize: size }}>{iconId}</span>
+}
+
+function IconGrid({ selected, onSelect }) {
+  return (
+    <div className={styles.iconGrid}>
+      {ROOM_ICONS.map(({ id, icon: Icon, label }) => (
+        <button
+          key={id}
+          className={`${styles.iconBtn} ${selected === id ? styles.iconSelected : ''}`}
+          onClick={() => onSelect(id)}
+          title={label}
+          type="button"
+        >
+          <Icon size={20} color={selected === id ? '#2d6a4f' : '#6b7280'} />
+          <span style={{ fontSize: 9, marginTop: 3, color: selected === id ? '#2d6a4f' : '#888' }}>
+            {label}
+          </span>
+        </button>
+      ))}
+    </div>
+  )
+}
 
 export default function Rooms() {
   const { rooms, addRoom, removeRoom, editRoom } = useHome()
   const [showModal, setShowModal] = useState(false)
   const [name, setName] = useState('')
-  const [icon, setIcon] = useState('🛋️')
+  const [icon, setIcon] = useState('sofa')
   const [editingRoom, setEditingRoom] = useState(null)
   const [editName, setEditName] = useState('')
-  const [editIcon, setEditIcon] = useState('🛋️')
+  const [editIcon, setEditIcon] = useState('sofa')
 
   const handleAdd = () => {
     if (!name.trim()) return
     addRoom(name.trim(), icon)
-    setName(''); setIcon('🛋️')
+    setName('')
+    setIcon('sofa')
     setShowModal(false)
+  }
+
+  const handleEdit = () => {
+    if (!editName.trim()) return
+    editRoom(editingRoom.id, editName.trim(), editIcon)
+    setEditingRoom(null)
   }
 
   return (
@@ -30,7 +90,8 @@ export default function Rooms() {
         subtitle={`${rooms.length} room${rooms.length !== 1 ? 's' : ''} in your home`}
         action={
           <button className={styles.addBtn} onClick={() => setShowModal(true)}>
-            ＋ Add Room
+            <Plus size={16} />
+            Add Room
           </button>
         }
       />
@@ -42,7 +103,12 @@ export default function Rooms() {
             <Link key={r.id} to={`/rooms/${r.id}`} className={`${styles.card} glass`}>
               <button
                 className={styles.editRoom}
-                onClick={e => { e.preventDefault(); setEditingRoom(r); setEditName(r.name); setEditIcon(r.icon) }}
+                onClick={e => {
+                  e.preventDefault()
+                  setEditingRoom(r)
+                  setEditName(r.name)
+                  setEditIcon(r.icon || 'sofa')
+                }}
                 title="Edit room"
               >✏️</button>
               <button
@@ -50,9 +116,14 @@ export default function Rooms() {
                 onClick={e => { e.preventDefault(); removeRoom(r.id) }}
                 title="Remove room"
               >✕</button>
-              <div className={styles.roomIcon}>{r.icon}</div>
+
+              <div className={styles.roomIcon}>
+                <RoomIcon iconId={r.icon} size={36} />
+              </div>
               <h3 className={styles.roomName}>{r.name}</h3>
-              <p className={styles.roomSub}>{r.devices.length} device{r.devices.length !== 1 ? 's' : ''}</p>
+              <p className={styles.roomSub}>
+                {r.devices.length} device{r.devices.length !== 1 ? 's' : ''}
+              </p>
               <div className={styles.statusRow}>
                 <span className={active > 0 ? 'tag tag-green' : 'tag tag-amber'}>
                   {active > 0 ? `${active} active` : 'All off'}
@@ -61,17 +132,19 @@ export default function Rooms() {
               <div className={styles.deviceIcons}>
                 {r.devices.slice(0, 4).map(d => (
                   <span key={d.id} style={{ opacity: d.on ? 1 : 0.3, fontSize: 18 }}>
-                    {{'light':'💡','ac':'❄️','tv':'📺','fan':'🌀','purifier':'🌬️','speaker':'🔊','lock':'🔒','camera':'📷','vacuum':'🤖','wifi':'📶','other':'🔌'}[d.type]||'🔌'}
+                    {DEVICE_EMOJIS[d.type] || '🔌'}
                   </span>
                 ))}
-                {r.devices.length > 4 && <span className={styles.more}>+{r.devices.length - 4}</span>}
+                {r.devices.length > 4 && (
+                  <span className={styles.more}>+{r.devices.length - 4}</span>
+                )}
               </div>
             </Link>
           )
         })}
 
         <button className={styles.newCard} onClick={() => setShowModal(true)}>
-          <span className={styles.newPlus}>＋</span>
+          <Plus size={28} color="#2d6a4f" />
           <span className={styles.newLabel}>New Room</span>
         </button>
       </div>
@@ -84,25 +157,23 @@ export default function Rooms() {
             value={editName}
             onChange={e => setEditName(e.target.value)}
             autoFocus
+            onKeyDown={e => e.key === 'Enter' && handleEdit()}
           />
-          <label style={{ marginTop: 14 }}>Choose Icon</label>
-          <div className={styles.iconGrid}>
-            {ICONS.map(ic => (
-              <button
-                key={ic}
-                className={`${styles.iconBtn} ${editIcon === ic ? styles.iconSelected : ''}`}
-                onClick={() => setEditIcon(ic)}
-              >
-                {ic}
-              </button>
-            ))}
-          </div>
+          <label style={{ marginTop: 14 }}>Room Type</label>
+          <IconGrid selected={editIcon} onSelect={setEditIcon} />
           <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
-            <button style={{flex:1,padding:'11px',borderRadius:10,border:'none',background:'#f0f0f0',color:'#666',cursor:'pointer',fontFamily:'inherit',fontSize:14,fontWeight:700}} onClick={() => setEditingRoom(null)}>Cancel</button>
-            <button style={{flex:1,padding:'11px',borderRadius:10,border:'none',background:'var(--accent)',color:'white',cursor:'pointer',fontFamily:'inherit',fontSize:14,fontWeight:700}} onClick={() => {
-              editRoom(editingRoom.id, editName.trim(), editIcon)
-              setEditingRoom(null)
-            }}>Save</button>
+            <button
+              style={{ flex:1, padding:'11px', borderRadius:10, border:'none', background:'#f0f0f0', color:'#666', cursor:'pointer', fontFamily:'inherit', fontSize:14, fontWeight:700 }}
+              onClick={() => setEditingRoom(null)}
+            >
+              Cancel
+            </button>
+            <button
+              style={{ flex:1, padding:'11px', borderRadius:10, border:'none', background:'#2d6a4f', color:'white', cursor:'pointer', fontFamily:'inherit', fontSize:14, fontWeight:700 }}
+              onClick={handleEdit}
+            >
+              Save
+            </button>
           </div>
         </Modal>
       )}
@@ -118,21 +189,21 @@ export default function Rooms() {
             onKeyDown={e => e.key === 'Enter' && handleAdd()}
             autoFocus
           />
-          <label style={{ marginTop: 14 }}>Choose Icon</label>
-          <div className={styles.iconGrid}>
-            {ICONS.map(ic => (
-              <button
-                key={ic}
-                className={`${styles.iconBtn} ${icon === ic ? styles.iconSelected : ''}`}
-                onClick={() => setIcon(ic)}
-              >
-                {ic}
-              </button>
-            ))}
-          </div>
+          <label style={{ marginTop: 14 }}>Room Type</label>
+          <IconGrid selected={icon} onSelect={setIcon} />
           <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
-            <button style={{flex:1,padding:'11px',borderRadius:10,border:'none',background:'#f0f0f0',color:'#666',cursor:'pointer',fontFamily:'inherit',fontSize:14,fontWeight:700}} onClick={() => setShowModal(false)}>Cancel</button>
-            <button style={{flex:1,padding:'11px',borderRadius:10,border:'none',background:'var(--accent)',color:'white',cursor:'pointer',fontFamily:'inherit',fontSize:14,fontWeight:700}} onClick={handleAdd}>Add Room</button>
+            <button
+              style={{ flex:1, padding:'11px', borderRadius:10, border:'none', background:'#f0f0f0', color:'#666', cursor:'pointer', fontFamily:'inherit', fontSize:14, fontWeight:700 }}
+              onClick={() => setShowModal(false)}
+            >
+              Cancel
+            </button>
+            <button
+              style={{ flex:1, padding:'11px', borderRadius:10, border:'none', background:'#2d6a4f', color:'white', cursor:'pointer', fontFamily:'inherit', fontSize:14, fontWeight:700 }}
+              onClick={handleAdd}
+            >
+              Add Room
+            </button>
           </div>
         </Modal>
       )}

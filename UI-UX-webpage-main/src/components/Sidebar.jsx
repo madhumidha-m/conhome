@@ -25,7 +25,7 @@ export default function Sidebar({ open, onClose }) {
           <X size={18} />
         </button>
         <img src="/logo.jpg" alt="Logo" className={styles.logoImage} />
-        <span className={styles.brandName}>SmartNest</span>
+        <span className={styles.brandName}>AutoHome</span>
       </div>
 
       <nav className={styles.nav}>
@@ -46,7 +46,12 @@ export default function Sidebar({ open, onClose }) {
 
       <div className={styles.bottom}>
         <div className={styles.userCard}>
-          <span className={styles.avatar}>👤</span>
+          <span className={styles.avatar}>
+  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="1.5">
+    <circle cx="12" cy="8" r="4"/>
+    <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+  </svg>
+</span>
           <div>
             <div className={styles.userName}>Admin</div>
             <div className={styles.userRole}>Owner</div>

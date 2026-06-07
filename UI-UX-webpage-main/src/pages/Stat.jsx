@@ -68,7 +68,7 @@ export default function Stats() {
         </div>
         <button
   onClick={() => setScanOpen(true)}
-  style={{display:'flex',alignItems:'center',gap:8,padding:'10px 20px',borderRadius:12,border:'none',background:'#6b7280',color:'white',fontSize:14,fontWeight:700,cursor:'pointer'}}
+  style={{display:'flex',alignItems:'center',gap:8,padding:'10px 20px',borderRadius:12,border:'none',background:'#6f6a6a',color:'white',fontSize:14,fontWeight:700,cursor:'pointer'}}
 >
   + Add Device
 </button>
