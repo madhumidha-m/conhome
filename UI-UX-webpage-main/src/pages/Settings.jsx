@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import PageHeader from '../components/PageHeader'
 import styles from './Settings.module.css'
+import { useHome } from '../context/HomeContext'
 
 export default function Settings() {
-  const [homeName, setHomeName] = useState('My Smart Home')
+  const { homeName, setHomeName } = useHome()
   const [notifications, setNotifications] = useState(true)
   const [autoLock, setAutoLock] = useState(true)
   const [energySave, setEnergySave] = useState(false)

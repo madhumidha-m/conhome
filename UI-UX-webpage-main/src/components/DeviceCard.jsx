@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useHome } from '../context/HomeContext'
 import Modal from './Modal'
 import styles from './DeviceCard.module.css'
+import { Pencil } from 'lucide-react'
 
 const TYPE_COLORS = {
   light:    { bg: '#fffbea', accent: '#f5a623' },
@@ -69,13 +70,13 @@ export default function DeviceCard({ roomId, device }) {
         </div>
 
         {/* Edit button — replaces the old ✕ */}
-        <button
-          className={styles.remove}
-          onClick={() => { setEditName(device.name); setShowEdit(true) }}
-          title="Edit device"
-        >
-          ✎
-        </button>
+       <button
+  className={styles.editBtn}
+  onClick={() => { setEditName(device.name); setShowEdit(true) }}
+  title="Edit device"
+>
+  <Pencil size={15} />
+</button>
       </div>
 
       {/* Edit popup */}

@@ -4,6 +4,7 @@ import { useHome } from '../context/HomeContext'
 import DeviceCard from '../components/DeviceCard'
 import PageHeader from '../components/PageHeader'
 import styles from './Devices.module.css'
+import { LayoutGrid, Zap, Power } from 'lucide-react'
 
 export default function Devices() {
   const { rooms, totalDevices, activeDevices } = useHome()
@@ -21,15 +22,38 @@ export default function Devices() {
         subtitle={`${activeDevices} active of ${totalDevices} total`}
         action={
           <div className={styles.filterRow}>
-            {['all','on','off'].map(f => (
-              <button
-                key={f}
-                className={`${styles.filterBtn} ${filter === f ? styles.filterActive : ''}`}
-                onClick={() => setFilter(f)}
-              >
-                {f === 'all' ? 'All' : f === 'on' ? '🟢 Active' : '⚫ Off'}
-              </button>
-            ))}
+        
+{['all','on','off'].map(f => (
+
+  <button
+    key={f}
+    className={`${styles.filterBtn} ${filter === f ? styles.filterActive : ''}`}
+    onClick={() => setFilter(f)}
+  >
+
+    {
+      f === 'all' ? (
+        <>
+          <LayoutGrid size={18} />
+          <span>All</span>
+        </>
+      ) : f === 'on' ? (
+        <>
+          <Zap size={18} />
+          <span>Active</span>
+        </>
+      ) : (
+        <>
+          <Power size={18} />
+          <span>Off</span>
+        </>
+      )
+    }
+
+  </button>
+
+))}
+
           </div>
         }
       />

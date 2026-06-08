@@ -17,7 +17,7 @@ const NAV = [
 ]
 
 export default function Sidebar({ open, onClose }) {
-  const { notifications } = useHome()
+  const { notifications, homeName } = useHome()
   return (
     <aside className={`${styles.sidebar} ${open ? styles.sidebarOpen : ''}`}>
       <div className={styles.brand}>
@@ -25,7 +25,7 @@ export default function Sidebar({ open, onClose }) {
           <X size={18} />
         </button>
         <img src="/logo.jpg" alt="Logo" className={styles.logoImage} />
-        <span className={styles.brandName}>AutoHome</span>
+        <span className={styles.brandName}>ConHome</span>
       </div>
 
       <nav className={styles.nav}>

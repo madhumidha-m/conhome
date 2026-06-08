@@ -43,7 +43,9 @@ export function HomeProvider({ children }) {
   ])
   const [doorLocked, setDoorLocked] = useState(true)
   const [powerPeriod, setPowerPeriod] = useState('week')
-  const [userName] = useState('Home Owner')
+  const [homeName, setHomeName] = useState('AutoHome')
+const [userName] = useState('Home Owner')
+
 
   // Room actions
   const addRoom = (name, icon) => {
@@ -115,7 +117,9 @@ export function HomeProvider({ children }) {
       notifications, dismissNotification,
       doorLocked, setDoorLocked,
       powerPeriod, setPowerPeriod, powerData,
-      userName, totalDevices, activeDevices,
+      homeName, setHomeName,
+userName, totalDevices, activeDevices,
+homeName, setHomeName,
       DEVICE_ICONS,
     }}>
       {children}

@@ -52,9 +52,32 @@
   font-size: 11px;
   color: #ccc;
   cursor: pointer;
-  opacity: 0;
+  opacity: 1;
   transition: opacity 0.2s;
   line-height: 1;
 }
-.card:hover .remove { opacity: 1; }
-.remove:hover { color: var(--red) !important; }
+
+
+
+.editBtn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: #f1f3f4;
+  border: none;
+  border-radius: 8px;
+  width: 34px;
+height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 1;
+  transition: all 0.2s;
+  color: #6b7280;
+}
+
+.editBtn:hover { 
+  background: #e8eaed !important;
+  color: #1a1a1a !important;
+}

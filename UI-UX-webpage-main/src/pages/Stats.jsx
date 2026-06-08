@@ -8,6 +8,7 @@ import { Cpu, Zap, DoorOpen, Activity } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import styles from './Stats.module.css'
 
+
 const MONTHLY = [
   { month: 'Jan', kwh: 420 }, { month: 'Feb', kwh: 380 }, { month: 'Mar', kwh: 350 },
   { month: 'Apr', kwh: 310 }, { month: 'May', kwh: 340 }, { month: 'Jun', kwh: 410 },
@@ -30,7 +31,7 @@ const TOOLTIP_STYLE = {
 }
 
 export default function Stats() {
-  const { totalDevices, activeDevices, rooms } = useHome()
+  const { totalDevices, activeDevices, rooms, homeName } = useHome()
   const [scanOpen, setScanOpen] = useState(false)
   const [showMore, setShowMore] = useState(false)
   const navigate = useNavigate()
@@ -57,10 +58,10 @@ export default function Stats() {
   }, [scanOpen])
 
   const statCards = [
-    { label: 'Total Devices', value: totalDevices, icon: Cpu,      color: '#9ca3af' },
+    { label: 'Total Devices', value: totalDevices, icon: Cpu,      color: '#ff4d4f' },
     { label: 'Active Now',    value: activeDevices, icon: Activity, color: '#4caf88' },
     { label: 'Rooms',         value: totalRooms,    icon: DoorOpen, color: '#3ab5b0' },
-    { label: 'Monthly kWh',   value: '440',         icon: Zap,      color: '#f5a623' },
+    { label: 'Monthly kWh',   value: '440',         icon: Zap,      color: '#ff4d4f' },
   ]
 
   return (
@@ -69,16 +70,26 @@ export default function Stats() {
       {/* Header */}
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:24}}>
         <div>
-          <h1 style={{fontFamily:'Sora,sans-serif',fontSize:24,fontWeight:600,color:'#1a1a2e'}}>Home</h1>
+          <h1 style={{fontFamily:'Sora,sans-serif',fontSize:24,fontWeight:600,color:'#1a1a2e'}}>{homeName || 'Home'}</h1>
           <p style={{fontSize:14,color:'#7a7a9a'}}>Energy & device usage overview</p>
         </div>
-        <button
-          onClick={() => setScanOpen(true)}
-          style={{display:'flex',alignItems:'center',gap:8,padding:'10px 20px',borderRadius:12,border:'none',background:'#6B7280',color:'white',fontSize:14,fontWeight:700,cursor:'pointer'}}
-        >
-          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" style={{marginRight:6}}><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-Add Device
-        </button>
+       <div style={{display:'flex',gap:10}}>
+  <button
+    onClick={() => setScanOpen(true)}
+    style={{display:'flex',alignItems:'center',gap:8,padding:'10px 20px',borderRadius:12,border:'none',background:'#6B7280',color:'white',fontSize:14,fontWeight:700,cursor:'pointer'}}
+  >
+    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    <span style={{display:'none',fontSize:14}}>Add Device</span>
+    <span style={{fontSize:14}}>Add Device</span>
+  </button>
+  <button
+    onClick={() => { if(window.confirm('Are you sure you want to logout?')) window.location.href = '/login' }}
+    style={{display:'flex',alignItems:'center',gap:8,padding:'10px 20px',borderRadius:12,border:'none',background:'#6B7280',color:'white',fontSize:14,fontWeight:700,cursor:'pointer'}}
+  >
+    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"/></svg>
+    Logout
+  </button>
+</div>
       </div>
 
       {/* QR Scanner Popup */}

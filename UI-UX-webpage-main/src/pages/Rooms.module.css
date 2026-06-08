@@ -24,10 +24,9 @@
 .removeRoom {
   position: absolute; top: 12px; right: 12px;
   background: none; border: none; font-size: 12px;
-  color: #ccc; cursor: pointer; opacity: 0;
+  color: #ccc; cursor: pointer; opacity: 1;
   transition: opacity 0.2s;
 }
-.card:hover .removeRoom { opacity: 1; }
 .removeRoom:hover { color: var(--red); }
 
 .roomIcon { font-size: 36px; margin-bottom: 4px; }
@@ -71,10 +70,24 @@
 .iconBtn:hover { border-color: var(--accent); background: var(--accent-soft); }
 .iconSelected { border-color: var(--accent); background: var(--accent-soft); box-shadow: 0 0 0 2px rgba(232,114,74,0.3); }
 .editRoom {
-  position: absolute; top: 10px; right: 34px;
-  background: none; border: none; font-size: 12px;
-  color: #aaa; cursor: pointer; opacity: 0;
-  transition: opacity 0.2s;
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: #f1f3f4;
+  border: none;
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 1;
+  transition: all 0.2s;
+  color: #6b7280;
+  font-size: 15px;
 }
-.card:hover .editRoom { opacity: 1; }
-.editRoom:hover { color: var(--accent) !important; }
+.editRoom:hover { 
+  background: #e8eaed !important; 
+  color: #1a1a1a !important;
+}
