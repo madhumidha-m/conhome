@@ -68,15 +68,15 @@ export default function Stats() {
     <div>
 
       {/* Header */}
-      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:24}}>
-        <div>
-          <h1 style={{fontFamily:'Sora,sans-serif',fontSize:24,fontWeight:600,color:'#1a1a2e'}}>{homeName || 'Home'}</h1>
-          <p style={{fontSize:14,color:'#7a7a9a'}}>Energy & device usage overview</p>
-        </div>
-       <div style={{display:'flex',gap:10}}>
+     <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:24,flexWrap:'wrap',gap:10}}>
+  <div>
+    <h1 style={{fontFamily:'Sora,sans-serif',fontSize:24,fontWeight:600,color:'#1a1a2e'}}>{homeName || 'Home'}</h1>
+    <p style={{fontSize:14,color:'#7a7a9a'}}>Energy & device usage overview</p>
+  </div>
+  <div style={{display:'flex',gap:8,flexShrink:0}}>
   <button
     onClick={() => setScanOpen(true)}
-    style={{display:'flex',alignItems:'center',gap:8,padding:'10px 20px',borderRadius:12,border:'none',background:'#6B7280',color:'white',fontSize:14,fontWeight:700,cursor:'pointer'}}
+    style={{display:'flex',alignItems:'center',gap:8,padding:'8px 14px',borderRadius:12,border:'none',background:'#6B7280',color:'white',fontSize:13,fontWeight:700,cursor:'pointer'}}
   >
     <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
     <span style={{display:'none',fontSize:14}}>Add Device</span>
@@ -84,7 +84,7 @@ export default function Stats() {
   </button>
   <button
     onClick={() => { if(window.confirm('Are you sure you want to logout?')) window.location.href = '/login' }}
-    style={{display:'flex',alignItems:'center',gap:8,padding:'10px 20px',borderRadius:12,border:'none',background:'#6B7280',color:'white',fontSize:14,fontWeight:700,cursor:'pointer'}}
+    style={{display:'flex',alignItems:'center',gap:8,padding:'8px 14px',borderRadius:12,border:'none',background:'#6B7280',color:'white',fontSize:13,fontWeight:700,cursor:'pointer'}}
   >
     <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"/></svg>
     Logout

@@ -33,15 +33,18 @@
   .statCards {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
+    margin-bottom: 16px;
   }
 
   .statCard {
-    aspect-ratio: 1 / 1;
+    padding: 16px 10px;
+    aspect-ratio: unset;
     justify-content: center;
+    gap: 4px;
   }
 
   .statVal {
-    font-size: 22px;
+    font-size: 26px;
   }
 
   .statLbl {
@@ -51,13 +54,16 @@
 
   .charts {
     grid-template-columns: 1fr;
+    gap: 12px;
   }
 
-  .chart {
-    grid-column: 1 / -1;
-  }
-
+  .chart,
   .chartWide {
     grid-column: 1 / -1;
+    padding: 14px 12px;
+  }
+
+  .chartTitle {
+    font-size: 13px;
   }
 }
