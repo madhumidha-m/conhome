@@ -95,7 +95,7 @@ export default function DeviceCard({ roomId, device }) {
               onClick={handleDelete}
               style={{
                 flex: 1, padding: '11px', borderRadius: 10, border: 'none',
-                background: 'white', color: 'var(--accent)', cursor: 'pointer',
+                background: 'light gray', color: 'var(--accent)', cursor: 'pointer',
                 fontFamily: 'inherit', fontSize: 14, fontWeight: 700
               }}
             >

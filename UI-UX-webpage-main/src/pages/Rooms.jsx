@@ -198,7 +198,7 @@ export default function Rooms() {
               Cancel
             </button>
             <button
-              style={{ flex:1, padding:'11px', borderRadius:10, border:'none', background:'#2d6a4f', color:'white', cursor:'pointer', fontFamily:'inherit', fontSize:14, fontWeight:700 }}
+              style={{ flex:1, padding:'11px', borderRadius:10, border:'none', background:'#666', color:'white', cursor:'pointer', fontFamily:'inherit', fontSize:14, fontWeight:700 }}
               onClick={handleAdd}
             >
               Add Room
