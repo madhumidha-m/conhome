@@ -1,9 +1,9 @@
 .addBtn {
   padding: 10px 20px; border-radius: 12px;
-  background: var(--accent); color: white; border: none;
+  background:  grey; color: white; border: none;
   font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s;
 }
-.addBtn:hover { background: #d9633c; }
+.addBtn:hover { background: #928e8c; }
 
 .grid {
   display: grid;
