@@ -5,20 +5,6 @@ import DeviceCard from '../components/DeviceCard'
 import Modal from '../components/Modal'
 import styles from './RoomDetail.module.css'
 
-const DEVICE_TYPES = [
-  { value: 'light', label: '💡 Light' },
-  { value: 'ac', label: '❄️ AC / Cooler' },
-  { value: 'tv', label: '📺 TV' },
-  { value: 'fan', label: '🌀 Fan' },
-  { value: 'purifier', label: '🌬️ Air Purifier' },
-  { value: 'speaker', label: '🔊 Speaker' },
-  { value: 'lock', label: '🔒 Smart Lock' },
-  { value: 'camera', label: '📷 Camera' },
-  { value: 'vacuum', label: '🤖 Vacuum Bot' },
-  { value: 'wifi', label: '📶 WiFi Router' },
-  { value: 'other', label: '🔌 Other' },
-]
-
 export default function RoomDetail() {
   const { roomId } = useParams()
   const { rooms, addDevice } = useHome()
@@ -26,7 +12,8 @@ export default function RoomDetail() {
 
   const [showModal, setShowModal] = useState(false)
   const [devName, setDevName] = useState('')
-const [devType, setDevType] = useState(0)
+  const [devType, setDevType] = useState(0)
+  const [devConn, setDevConn] = useState('local')
 
   if (!room) return (
     <div style={{ textAlign: 'center', padding: 40 }}>
@@ -37,11 +24,19 @@ const [devType, setDevType] = useState(0)
   const handleAdd = () => {
     if (!devName.trim()) return
     addDevice(roomId, devName.trim(), devType)
-    setDevName(''); setDevType('light')
+    setDevName('')
+    setDevType(0)
+    setDevConn('local')
     setShowModal(false)
   }
 
   const activeCount = room.devices.filter(d => d.on).length
+
+  const ROOM_ICONS_MAP = {
+    sofa: '🛋️', bed: '🛏️', kitchen: '🍳', shower: '🚿',
+    study: '📚', gym: '🏋️', game: '🎮', garden: '🌿',
+    bath: '🛁', office: '🖥️', garage: '🚗', laundry: '🧺'
+  }
 
   return (
     <div>
@@ -49,15 +44,8 @@ const [devType, setDevType] = useState(0)
         <Link to="/rooms" className={styles.back}>← Rooms</Link>
         <div className={styles.titleRow}>
           <span className={styles.roomIcon}>
-  {(() => {
-    const ROOM_ICONS_MAP = {
-      sofa: '🛋️', bed: '🛏️', kitchen: '🍳', shower: '🚿',
-      study: '📚', gym: '🏋️', game: '🎮', garden: '🌿',
-      bath: '🛁', office: '🖥️', garage: '🚗', laundry: '🧺'
-    }
-    return ROOM_ICONS_MAP[room.icon] || room.icon
-  })()}
-</span>
+            {ROOM_ICONS_MAP[room.icon] || room.icon}
+          </span>
           <div>
             <h1 className={styles.title}>{room.name}</h1>
             <p className={styles.sub}>{room.devices.length} devices · {activeCount} active</p>
@@ -72,7 +60,6 @@ const [devType, setDevType] = useState(0)
         <div className={styles.empty}>
           <span style={{ fontSize: 48 }}>📦</span>
           <p>No devices yet. Add your first device!</p>
-         
         </div>
       ) : (
         <div className={styles.grid}>
@@ -87,7 +74,7 @@ const [devType, setDevType] = useState(0)
       )}
 
       {showModal && (
-       <Modal title={`Add Appliance to ${room.name}`} onClose={() => setShowModal(false)}>
+        <Modal title={`Add Appliance to ${room.name}`} onClose={() => setShowModal(false)}>
           <label>Appliance Name</label>
           <input
             value={devName}
@@ -96,25 +83,51 @@ const [devType, setDevType] = useState(0)
             autoFocus
             onKeyDown={e => e.key === 'Enter' && handleAdd()}
           />
-         <label>Device Number</label>
-<input
-  type="number"
-  min="0"
-  max="35"
-  value={devType}
-  onChange={e => setDevType(Number(e.target.value))}
-  style={{
-    width:'100%', padding:'10px 14px',
-    border:'1.5px solid rgba(0,0,0,0.1)',
-    borderRadius:10, fontSize:14,
-    fontFamily:'inherit', outline:'none',
-    background:'#fafafa'
-  }}
-/>
 
-          <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
-            <button style={{flex:1,padding:'11px',borderRadius:10,border:'none',background:'#f0f0f0',color:'#666',cursor:'pointer',fontFamily:'inherit',fontSize:14,fontWeight:700}} onClick={() => setShowModal(false)}>Cancel</button>
-            <button style={{flex:1,padding:'11px',borderRadius:10,border:'none',background:'var(--accent)',color:'white',cursor:'pointer',fontFamily:'inherit',fontSize:14,fontWeight:700}} onClick={handleAdd}>Add Device</button>
+          <label style={{ display:'block', marginTop:14, marginBottom:6 }}>Device Number</label>
+          <input
+            type="number"
+            min="0"
+            max="35"
+            value={devType}
+            onChange={e => setDevType(Number(e.target.value))}
+            style={{
+              width:'100%', padding:'10px 14px',
+              border:'1.5px solid rgba(0,0,0,0.1)',
+              borderRadius:10, fontSize:14,
+              fontFamily:'inherit', outline:'none',
+              background:'#fafafa'
+            }}
+          />
+
+          <label style={{ display:'block', marginTop:14, marginBottom:6 }}>Device Name</label>
+          <select
+            value={devConn}
+            onChange={e => setDevConn(e.target.value)}
+            style={{
+              width:'100%', padding:'10px 14px',
+              border:'1.5px solid rgba(0,0,0,0.1)',
+              borderRadius:10, fontSize:14,
+              fontFamily:'inherit', outline:'none',
+              background:'#fafafa', cursor:'pointer'
+            }}
+          >
+            <option value="local">Local / no ESP32</option>
+          </select>
+
+          <div style={{ display:'flex', gap:10, marginTop:20 }}>
+            <button
+              style={{flex:1,padding:'11px',borderRadius:10,border:'none',background:'#f0f0f0',color:'#666',cursor:'pointer',fontFamily:'inherit',fontSize:14,fontWeight:700}}
+              onClick={() => setShowModal(false)}
+            >
+              Cancel
+            </button>
+            <button
+              style={{flex:1,padding:'11px',borderRadius:10,border:'none',background:'var(--accent)',color:'white',cursor:'pointer',fontFamily:'inherit',fontSize:14,fontWeight:700}}
+              onClick={handleAdd}
+            >
+              Add Device
+            </button>
           </div>
         </Modal>
       )}

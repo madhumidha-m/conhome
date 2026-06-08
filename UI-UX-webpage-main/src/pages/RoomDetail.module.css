@@ -12,7 +12,7 @@
   background: var(--accent); color: white; border: none;
   font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s;
 }
-.addBtn:hover { background: #d9633c; }
+.addBtn:hover { background: gray; }
 
 .grid {
   display: grid;

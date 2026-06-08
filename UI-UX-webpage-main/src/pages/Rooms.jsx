@@ -13,12 +13,12 @@ const ROOM_ICONS = [
   { id: 'sofa',    icon: Sofa,      label: 'Living Room' },
   { id: 'bed',     icon: BedDouble, label: 'Bedroom' },
   { id: 'kitchen', icon: ChefHat,   label: 'Kitchen' },
- { id: 'shower', icon: Droplets, label: 'Bathroom' },
+  { id: 'shower',  icon: Droplets,  label: 'Bathroom' },
   { id: 'study',   icon: BookOpen,  label: 'Study' },
   { id: 'gym',     icon: Dumbbell,  label: 'Gym' },
   { id: 'game',    icon: Gamepad2,  label: 'Game Room' },
   { id: 'garden',  icon: Leaf,      label: 'Garden' },
-  { id: 'bath',    icon: Waves,      label: 'Bathtub' },
+  { id: 'bath',    icon: Waves,     label: 'Bathtub' },
   { id: 'office',  icon: Monitor,   label: 'Office' },
   { id: 'garage',  icon: Car,       label: 'Garage' },
   { id: 'laundry', icon: Wind,      label: 'Laundry' },
@@ -28,7 +28,6 @@ const DEVICE_EMOJIS = {
   light:'💡', ac:'❄️', tv:'📺', fan:'🌀', purifier:'🌬️',
   speaker:'🔊', lock:'🔒', camera:'📷', vacuum:'🤖', wifi:'📶', other:'🔌'
 }
-  
 
 function RoomIcon({ iconId, size = 36 }) {
   const found = ROOM_ICONS.find(ri => ri.id === iconId)
@@ -83,6 +82,11 @@ export default function Rooms() {
     setEditingRoom(null)
   }
 
+  const handleDelete = () => {
+    removeRoom(editingRoom.id)
+    setEditingRoom(null)
+  }
+
   return (
     <div>
       <PageHeader
@@ -101,6 +105,7 @@ export default function Rooms() {
           const active = r.devices.filter(d => d.on).length
           return (
             <Link key={r.id} to={`/rooms/${r.id}`} className={`${styles.card} glass`}>
+              {/* Only edit button — no ✕ */}
               <button
                 className={styles.editRoom}
                 onClick={e => {
@@ -110,12 +115,7 @@ export default function Rooms() {
                   setEditIcon(r.icon || 'sofa')
                 }}
                 title="Edit room"
-              >✏️</button>
-              <button
-                className={styles.removeRoom}
-                onClick={e => { e.preventDefault(); removeRoom(r.id) }}
-                title="Remove room"
-              >✕</button>
+              >✎</button>
 
               <div className={styles.roomIcon}>
                 <RoomIcon iconId={r.icon} size={36} />
@@ -163,13 +163,12 @@ export default function Rooms() {
           <IconGrid selected={editIcon} onSelect={setEditIcon} />
           <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
             <button
-              style={{ flex:1, padding:'11px', borderRadius:10, border:'none', background:'#f0f0f0', color:'#666', cursor:'pointer', fontFamily:'inherit', fontSize:14, fontWeight:700 }}
-              onClick={() => setEditingRoom(null)}
+             style={{ flex:1, padding:'11px', borderRadius:10, border:'none', background:'#f0f0f0', color:'#666', cursor:'pointer', fontFamily:'inherit', fontSize:14, fontWeight:700 }}
             >
-              Cancel
+              🗑 Delete
             </button>
             <button
-              style={{ flex:1, padding:'11px', borderRadius:10, border:'none', background:'#2d6a4f', color:'white', cursor:'pointer', fontFamily:'inherit', fontSize:14, fontWeight:700 }}
+              style={{ flex:1, padding:'11px', borderRadius:10, border:'none', background:'#6B7280', color:'white', cursor:'pointer', fontFamily:'inherit', fontSize:14, fontWeight:700 }}
               onClick={handleEdit}
             >
               Save

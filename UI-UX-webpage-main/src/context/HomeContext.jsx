@@ -78,6 +78,16 @@ export function HomeProvider({ children }) {
         : r
     ))
   }
+  const renameDevice = (roomId, deviceId, newName) => {
+    setRooms(prev => prev.map(r =>
+      r.id !== roomId ? r : {
+        ...r,
+        devices: r.devices.map(d =>
+          d.id !== deviceId ? d : { ...d, name: newName }
+        )
+      }
+    ))
+  }
 
   // Members
   const addMember = (name, role) => {
@@ -100,7 +110,7 @@ export function HomeProvider({ children }) {
   return (
     <HomeContext.Provider value={{
       rooms, addRoom, removeRoom, editRoom,
-      addDevice, toggleDevice, removeDevice,
+      addDevice, toggleDevice, removeDevice, renameDevice,
       members, addMember, removeMember,
       notifications, dismissNotification,
       doorLocked, setDoorLocked,

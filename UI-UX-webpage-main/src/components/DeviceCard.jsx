@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useHome } from '../context/HomeContext'
+import Modal from './Modal'
 import styles from './DeviceCard.module.css'
 
 const TYPE_COLORS = {
@@ -22,40 +23,97 @@ const TYPE_EMOJI = {
 }
 
 export default function DeviceCard({ roomId, device }) {
-  const { toggleDevice, removeDevice } = useHome()
+  const { toggleDevice, removeDevice, renameDevice } = useHome()
   const colors = TYPE_COLORS[device.type] || TYPE_COLORS.other
   const emoji = TYPE_EMOJI[device.type] || '🔌'
 
+  const [showEdit, setShowEdit] = useState(false)
+  const [editName, setEditName] = useState(device.name)
+
+  const handleSave = () => {
+    if (!editName.trim()) return
+    renameDevice(roomId, device.id, editName.trim())
+    setShowEdit(false)
+  }
+
+  const handleDelete = () => {
+    removeDevice(roomId, device.id)
+    setShowEdit(false)
+  }
+
   return (
-    <div
-      className={styles.card}
-      style={{ background: device.on ? colors.bg : '#f9f9f9' }}
-    >
-      <div className={styles.topRow}>
-        <span
-          className={styles.iconWrap}
-          style={{ background: device.on ? colors.accent + '22' : '#eee' }}
-        >
-          <span style={{ fontSize: 22 }}>{emoji}</span>
-        </span>
+    <>
+      <div
+        className={styles.card}
+        style={{ background: device.on ? colors.bg : '#f9f9f9' }}
+      >
+        <div className={styles.topRow}>
+          <span
+            className={styles.iconWrap}
+            style={{ background: device.on ? colors.accent + '22' : '#eee' }}
+          >
+            <span style={{ fontSize: 22 }}>{emoji}</span>
+          </span>
+          <button
+            className={`${styles.toggle} ${device.on ? styles.on : ''}`}
+            style={device.on ? { background: colors.accent } : {}}
+            onClick={() => toggleDevice(roomId, device.id)}
+            aria-label="Toggle"
+          >
+            <span className={styles.knob} />
+          </button>
+        </div>
+        <div className={styles.name}>{device.name}</div>
+        <div className={styles.status} style={{ color: device.on ? colors.accent : '#aaa' }}>
+          {device.on ? 'Active' : 'Off'}
+        </div>
+
+        {/* Edit button — replaces the old ✕ */}
         <button
-          className={`${styles.toggle} ${device.on ? styles.on : ''}`}
-          style={device.on ? { background: colors.accent } : {}}
-          onClick={() => toggleDevice(roomId, device.id)}
-          aria-label="Toggle"
+          className={styles.remove}
+          onClick={() => { setEditName(device.name); setShowEdit(true) }}
+          title="Edit device"
         >
-          <span className={styles.knob} />
+          ✎
         </button>
       </div>
-      <div className={styles.name}>{device.name}</div>
-      <div className={styles.status} style={{ color: device.on ? colors.accent : '#aaa' }}>
-        {device.on ? 'Active' : 'Off'}
-      </div>
-      <button
-        className={styles.remove}
-        onClick={() => removeDevice(roomId, device.id)}
-        title="Remove device"
-      >✕</button>
-    </div>
+
+      {/* Edit popup */}
+      {showEdit && (
+        <Modal title="Edit Appliance" onClose={() => setShowEdit(false)}>
+          <label>Appliance Name</label>
+          <input
+            value={editName}
+            onChange={e => setEditName(e.target.value)}
+            placeholder="e.g. Ceiling Light"
+            autoFocus
+            onKeyDown={e => e.key === 'Enter' && handleSave()}
+          />
+
+          <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
+            <button
+              onClick={handleDelete}
+              style={{
+                flex: 1, padding: '11px', borderRadius: 10, border: 'none',
+                background: 'white', color: 'var(--accent)', cursor: 'pointer',
+                fontFamily: 'inherit', fontSize: 14, fontWeight: 700
+              }}
+            >
+              🗑 Delete
+            </button>
+            <button
+              onClick={handleSave}
+              style={{
+                flex: 1, padding: '11px', borderRadius: 10, border: 'none',
+                background: 'var(--accent)', color: 'white', cursor: 'pointer',
+                fontFamily: 'inherit', fontSize: 14, fontWeight: 700
+              }}
+            >
+              Save
+            </button>
+          </div>
+        </Modal>
+      )}
+    </>
   )
 }

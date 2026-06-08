@@ -74,7 +74,7 @@ export default function Stats() {
         </div>
         <button
           onClick={() => setScanOpen(true)}
-          style={{display:'flex',alignItems:'center',gap:8,padding:'10px 20px',borderRadius:12,border:'none',background:'#2d6a4f',color:'white',fontSize:14,fontWeight:700,cursor:'pointer'}}
+          style={{display:'flex',alignItems:'center',gap:8,padding:'10px 20px',borderRadius:12,border:'none',background:'#6B7280',color:'white',fontSize:14,fontWeight:700,cursor:'pointer'}}
         >
           <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" style={{marginRight:6}}><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
 Add Device
