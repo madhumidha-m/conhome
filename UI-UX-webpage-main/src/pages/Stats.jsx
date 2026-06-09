@@ -104,12 +104,13 @@ export default function Stats() {
             <h3 style={{fontSize:20,fontWeight:800,color:'#1a1a2e',marginBottom:8}}>Scan QR Code</h3>
             <p style={{fontSize:13,color:'#888',marginBottom:24,lineHeight:1.6}}>Point your camera at the QR code printed on your smart device to add it to your home</p>
             <div style={{width:'100%',margin:'0 auto 20px',borderRadius:16,overflow:'hidden',border:'3px solid #9ca3af'}}>
-              <video
+             <video
   ref={videoRef}
-  style={{width:'100%',height:300,objectFit:'cover',display:'block',borderRadius:12}}
+  style={{width:'100%',height:300,objectFit:'cover',display:'block'}}
   autoPlay
   playsInline
   muted
+  webkit-playsinline="true"
 />
             </div>
             <p style={{fontSize:12,color:'#bbb',marginBottom:24}}>Make sure the QR code is well lit and fully visible</p>
