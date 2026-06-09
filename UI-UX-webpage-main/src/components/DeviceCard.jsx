@@ -100,7 +100,7 @@ export default function DeviceCard({ roomId, device }) {
                 fontFamily: 'inherit', fontSize: 14, fontWeight: 700
               }}
             >
-              🗑 Delete
+               Delete
             </button>
             <button
               onClick={handleSave}
