@@ -62,7 +62,7 @@ export default function Settings() {
     <div style={{
   marginTop:'24px',
   display:'flex',
-  justifyContent:'center'
+  justifyContent:'flex-start'
 }}>
   <span
 onClick={() => {

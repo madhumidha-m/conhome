@@ -14,6 +14,7 @@ export default function RoomDetail() {
   const [devName, setDevName] = useState('')
   const [devType, setDevType] = useState(0)
   const [devConn, setDevConn] = useState('local')
+  const [deviceType, setDeviceType] = useState('light')
 
   if (!room) return (
     <div style={{ textAlign: 'center', padding: 40 }}>
@@ -22,13 +23,13 @@ export default function RoomDetail() {
   )
 
   const handleAdd = () => {
-    if (!devName.trim()) return
-    addDevice(roomId, devName.trim(), devType)
-    setDevName('')
-    setDevType(0)
-    setDevConn('local')
-    setShowModal(false)
-  }
+  if (!devName.trim()) return
+  addDevice(roomId, devName.trim() , devType)
+  setDevName('')
+  setDevType(0)
+  setDevConn('local')
+  setShowModal(false)
+}
 
   const activeCount = room.devices.filter(d => d.on).length
 
@@ -113,20 +114,20 @@ export default function RoomDetail() {
     style={{ width:44, height:44, fontSize:20, border:'none', background:'transparent', cursor:'pointer', color:'#555', fontWeight:700 }}
   >＋</button>
 </div>
-          <label style={{ display:'block', marginTop:14, marginBottom:6 }}>Device Name</label>
-          <select
-            value={devConn}
-            onChange={e => setDevConn(e.target.value)}
-            style={{
-              width:'100%', padding:'10px 14px',
-              border:'1.5px solid rgba(0,0,0,0.1)',
-              borderRadius:10, fontSize:14,
-              fontFamily:'inherit', outline:'none',
-              background:'#fafafa', cursor:'pointer'
-            }}
-          >
-            <option value="local">Local / no ESP32</option>
-          </select>
+   <label style={{ display:'block', marginTop:14, marginBottom:6 }}>Device Name</label>
+<select
+  value={devConn}
+  onChange={e => setDevConn(e.target.value)}
+  style={{
+    width:'100%', padding:'10px 14px',
+    border:'1.5px solid rgba(0,0,0,0.1)',
+    borderRadius:10, fontSize:14,
+    fontFamily:'inherit', outline:'none',
+    background:'#fafafa', cursor:'pointer'
+  }}
+>
+  <option value="local">Local / no ESP32</option>
+</select>
 
           <div style={{ display:'flex', gap:10, marginTop:20 }}>
             <button

@@ -24,7 +24,7 @@ export default function Members() {
     <div>
       <PageHeader
         title="Members"
-        
+        subtitle={`${members.length} people have access to your home`}
         action={
          <button
   onClick={() => setShowModal(true)}

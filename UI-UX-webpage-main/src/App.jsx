@@ -37,6 +37,7 @@ function AppRoutes() {
         <Route path="graphs" element={<Graphs />} />
         <Route path="notifications" element={<Notifications />} />
       </Route>
+      <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   )
 }

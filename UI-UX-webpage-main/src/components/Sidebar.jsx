@@ -18,6 +18,7 @@ const NAV = [
 
 export default function Sidebar({ open, onClose }) {
   const { notifications, homeName } = useHome()
+const savedUser = JSON.parse(localStorage.getItem('smarthome_user') || '{}')
   return (
     <aside className={`${styles.sidebar} ${open ? styles.sidebarOpen : ''}`}>
       <div className={styles.brand}>
@@ -53,8 +54,8 @@ export default function Sidebar({ open, onClose }) {
   </svg>
 </span>
           <div>
-            <div className={styles.userName}>Admin</div>
-            <div className={styles.userRole}>Owner</div>
+            <div className={styles.userName}>{savedUser.name || 'Admin'}</div>
+<div className={styles.userRole}>Owner</div>
           </div>
         </div>
       </div>
