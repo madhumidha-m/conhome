@@ -4,6 +4,7 @@ import { useHome } from '../context/HomeContext'
 import DeviceCard from '../components/DeviceCard'
 import PageHeader from '../components/PageHeader'
 import styles from './Devices.module.css'
+import RoomIcon from '../components/RoomIcon'
 import { LayoutGrid, Zap, Power } from 'lucide-react'
 
 export default function Devices() {
@@ -77,7 +78,7 @@ export default function Devices() {
             return (
               <div key={r.id} className={styles.section}>
                 <div className={styles.roomHead}>
-                  <span>{r.icon}</span>
+                 <RoomIcon iconId={r.icon} size={20} />
                   <span className={styles.roomLabel}>{r.name}</span>
                   <Link to={`/rooms/${r.id}`} className={styles.manageLink}>Manage →</Link>
                 </div>

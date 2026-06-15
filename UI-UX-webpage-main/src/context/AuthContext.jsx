@@ -23,8 +23,9 @@ export function AuthProvider({ children }) {
       localStorage.setItem('userId', data.userId)
       const userData = { name: data.name, email, userId: data.userId }
       localStorage.setItem('smarthome_user', JSON.stringify(userData))
-      setUser(userData)
-      return { success: true }
+     setUser(userData)
+window.location.href = '/stats'
+return { success: true }
     } catch (err) {
       return { error: 'Server not reachable. Is backend running?' }
     }

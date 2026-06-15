@@ -4,38 +4,12 @@ import { useHome } from '../context/HomeContext'
 import Modal from '../components/Modal'
 import PageHeader from '../components/PageHeader'
 import styles from './Rooms.module.css'
-import {
-  Sofa, BedDouble, ChefHat, Droplets, BookOpen,
-  Dumbbell, Gamepad2, Leaf, Waves, Monitor, Car, Wind, Plus
-} from 'lucide-react'
-
-const ROOM_ICONS = [
-  { id: 'sofa',    icon: Sofa,      label: 'Living Room' },
-  { id: 'bed',     icon: BedDouble, label: 'Bedroom' },
-  { id: 'kitchen', icon: ChefHat,   label: 'Kitchen' },
-  { id: 'shower',  icon: Droplets,  label: 'Bathroom' },
-  { id: 'study',   icon: BookOpen,  label: 'Study' },
-  { id: 'gym',     icon: Dumbbell,  label: 'Gym' },
-  { id: 'game',    icon: Gamepad2,  label: 'Game Room' },
-  { id: 'garden',  icon: Leaf,      label: 'Garden' },
-  { id: 'bath',    icon: Waves,     label: 'Bathtub' },
-  { id: 'office',  icon: Monitor,   label: 'Office' },
-  { id: 'garage',  icon: Car,       label: 'Garage' },
-  { id: 'laundry', icon: Wind,      label: 'Laundry' },
-]
+import RoomIcon, { ROOM_ICONS } from '../components/RoomIcon'
+import { Plus } from 'lucide-react'
 
 const DEVICE_EMOJIS = {
   light:'💡', ac:'❄️', tv:'📺', fan:'🌀', purifier:'🌬️',
   speaker:'🔊', lock:'🔒', camera:'📷', vacuum:'🤖', wifi:'📶', other:'🔌'
-}
-
-function RoomIcon({ iconId, size = 36 }) {
-  const found = ROOM_ICONS.find(ri => ri.id === iconId)
-  if (found) {
-    const Icon = found.icon
-    return <Icon size={size} color="#2d6a4f" />
-  }
-  return <span style={{ fontSize: size }}>{iconId}</span>
 }
 
 function IconGrid({ selected, onSelect }) {

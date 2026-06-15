@@ -49,10 +49,16 @@ export function HomeProvider({ children }) {
 
   // ─── LOAD ALL DATA ON MOUNT ───────────────────────────────
   useEffect(() => {
-    if (!getToken()) { setLoading(false); return }
-    loadAll()
-  }, [])
-
+  const token = getToken()
+  if (!token) { 
+    setLoading(false)
+    setRooms([])
+    setMembers([])
+    setNotifications([])
+    return 
+  }
+  loadAll()
+}, [])
   const loadAll = async () => {
     setLoading(true)
     try {

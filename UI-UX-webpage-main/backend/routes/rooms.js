@@ -21,11 +21,12 @@ router.get('/', auth, async (req, res) => {
 })
 
 // Add room
+// Add room
 router.post('/', auth, async (req, res) => {
-  const { room_name } = req.body
+  const { room_name, icon } = req.body
   const result = await pool.query(
-    'INSERT INTO rooms (room_id, room_name, user_id) VALUES (gen_random_uuid(), $1, $2) RETURNING *',
-    [room_name, req.user.userId]
+    'INSERT INTO rooms (room_id, room_name, user_id, icon) VALUES (gen_random_uuid(), $1, $2, $3) RETURNING *',
+    [room_name, req.user.userId, icon || 'sofa']
   )
   res.json(result.rows[0])
 })
