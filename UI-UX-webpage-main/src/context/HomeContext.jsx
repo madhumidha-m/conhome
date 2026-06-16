@@ -87,12 +87,12 @@ export function HomeProvider({ children }) {
           const devRes = await fetch(`${API}/devices/${r.room_id}`, { headers: authHeaders() })
           const devData = await devRes.json()
           const devices = Array.isArray(devData) ? devData.map(d => ({
-            id: d.device_id,
-            name: d.device_name,
-            type: d.device_type,
-            on: d.power === 1,
-            gpio: d.gpio_pin,
-          })) : []
+  id: d.device_id,
+  name: d.appliance_name,
+  type: d.device_name,
+  on: d.power === 1,
+  gpio: d.gpio_pin,
+})) : []
           return {
             id: r.room_id,
             name: r.room_name,
@@ -159,20 +159,20 @@ export function HomeProvider({ children }) {
     const res = await fetch(`${API}/devices`, {
       method: 'POST',
       headers: authHeaders(),
-      body: JSON.stringify({
-        device_name: name,
-        device_type: type,
-        gpio_pin: gpioPin,
-        room_id: roomId,
-      }),
+     body: JSON.stringify({
+  appliance_name: name,
+  device_name: type,
+  gpio_pin: gpioPin,
+  room_id: roomId,
+}),
       })
       const data = await res.json()
       setRooms(prev => prev.map(r =>
         r.id === roomId
           ? { ...r, devices: [...r.devices, {
               id: data.device_id,
-              name: data.device_name,
-              type: data.device_type,
+            name: data.appliance_name,
+type: data.device_name,
               on: false,
               gpio: data.gpio_pin,
             }]}
@@ -237,7 +237,7 @@ export function HomeProvider({ children }) {
       await fetch(`${API}/devices/${deviceId}`, {
         method: 'PATCH',
         headers: authHeaders(),
-        body: JSON.stringify({ device_name: newName }),
+        body: JSON.stringify({ appliance_name: newName }),
       })
       setRooms(prev => prev.map(r =>
         r.id !== roomId ? r : {
