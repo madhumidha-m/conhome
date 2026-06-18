@@ -17,32 +17,29 @@ export default function Auth() {
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setError('')
+  e.preventDefault()
+  setError('')
 
-    if (mode === 'signup') {
-      if (!name.trim()) return setError('Please enter your name')
-      if (password.length < 6) return setError('Password must be at least 6 characters')
-      if (password !== confirm) return setError('Passwords do not match')
-    }
-
-    if (!email.trim()) return setError('Please enter your email')
-    if (!password) return setError('Please enter your password')
-
-    setLoading(true)
-    setTimeout(() => {
-      const result = mode === 'login'
-        ? login(email.trim(), password)
-        : signup(name.trim(), email.trim(), password)
-
-      if (result.error) {
-        setError(result.error)
-        setLoading(false)
-      } else {
-        navigate('/dashboard')
-      }
-    }, 600)
+  if (mode === 'signup') {
+    if (!name.trim()) return setError('Please enter your name')
+    if (password.length < 6) return setError('Password must be at least 6 characters')
+    if (password !== confirm) return setError('Passwords do not match')
   }
+
+  if (!email.trim()) return setError('Please enter your email')
+  if (!password) return setError('Please enter your password')
+
+  setLoading(true)
+
+  const result = mode === 'login'
+    ? await login(email.trim(), password)
+    : await signup(name.trim(), email.trim(), password)
+
+  if (result.error) {
+    setError(result.error)
+    setLoading(false)
+  }
+}
 
   const switchMode = () => {
     setMode(m => m === 'login' ? 'signup' : 'login')
@@ -96,8 +93,7 @@ export default function Auth() {
               ? 'Sign in to access your smart home'
               : 'Set up your Conhome account'}
           </p>
-
-          <form className={styles.form} onSubmit={handleSubmit}>
+            <form className={styles.form} onSubmit={handleSubmit} autoComplete="off">
             {mode === 'signup' && (
               <div className={styles.field}>
                 <label>Full Name</label>
@@ -119,6 +115,7 @@ export default function Auth() {
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 autoFocus={mode === 'login'}
+                 autoComplete="new-password"
               />
             </div>
 
@@ -129,6 +126,7 @@ export default function Auth() {
                 placeholder={mode === 'signup' ? 'Min. 6 characters' : 'Your password'}
                 value={password}
                 onChange={e => setPassword(e.target.value)}
+                 autoComplete="new-password"
               />
             </div>
 

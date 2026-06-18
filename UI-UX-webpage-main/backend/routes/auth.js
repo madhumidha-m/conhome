@@ -8,10 +8,13 @@ router.post('/register', async (req, res) => {
   const { name, email, password } = req.body
   try {
     const hash = await bcrypt.hash(password, 12)
-    const result = await pool.query(
-      'INSERT INTO users (user_id, name, email, password_hash, created_at) VALUES (gen_random_uuid(), $1, $2, $3, NOW()) RETURNING user_id, name, email',
-      [name, email, hash]
-    )
+   const short = require('short-uuid')
+const userId = short.generate()  // generates "mhvXdrZT4jP5T8vBxuvm75" — 22 chars instead of 36
+
+const result = await pool.query(
+  'INSERT INTO users (user_id, name, email, password_hash, created_at) VALUES ($1, $2, $3, $4, NOW()) RETURNING *',
+  [userId, name, email, hash]
+)
     res.json({ user: result.rows[0] })
   } catch (err) {
     res.status(400).json({ error: err.message })

@@ -1,10 +1,9 @@
 import React, { createContext, useContext, useState } from 'react'
 
 const AuthContext = createContext(null)
+const API = 'http://10.45.239.75:4000/api'
 
-const API = 'http://localhost:4000/api'
-
-export function AuthProvider({ children }) {
+ export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem('smarthome_user')
     return saved ? JSON.parse(saved) : null
