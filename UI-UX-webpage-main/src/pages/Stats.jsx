@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useHome } from '../context/HomeContext'
+import jsQR from 'jsqr'
 import {
   AreaChart, Area, BarChart, Bar, LineChart, Line,
   XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid,
@@ -34,35 +35,88 @@ export default function Stats() {
   const { totalDevices, activeDevices, rooms, homeName } = useHome()
   const [scanOpen, setScanOpen] = useState(false)
   const [showMore, setShowMore] = useState(false)
+  const [currentData, setCurrentData] = useState([])
   const navigate = useNavigate()
   const videoRef = useRef(null)
+  const canvasRef = useRef(null)
   const totalRooms = rooms.length
 
-  useEffect(() => {
+  const [cameraError, setCameraError] = useState('')
+
+useEffect(() => {
     if (scanOpen) {
+      setCameraError('')
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        setCameraError('Camera not supported. Make sure you are using HTTPS or localhost.')
+        return
+      }
       navigator.mediaDevices.getUserMedia({ 
-  video: { 
-    facingMode: { ideal: 'environment' },
-    width: { ideal: 1920 },
-    height: { ideal: 1080 },
-    aspectRatio: { ideal: 1.777 },
-    focusMode: { ideal: 'continuous' },
-    advanced: [{ focusMode: 'continuous' }]
-  } 
-})
+        video: { facingMode: { ideal: 'environment' } } 
+      })
         .then(stream => {
           if (videoRef.current) {
             videoRef.current.srcObject = stream
             videoRef.current.play()
           }
         })
-        .catch(err => alert('Camera not accessible: ' + err.message))
+        .catch(err => setCameraError('Camera not accessible: ' + err.message))
     } else {
       if (videoRef.current && videoRef.current.srcObject) {
         videoRef.current.srcObject.getTracks().forEach(track => track.stop())
       }
     }
   }, [scanOpen])
+  useEffect(() => {
+  if (!scanOpen) return
+
+  let animationId
+
+  const scanFrame = () => {
+    const video = videoRef.current
+    const canvas = canvasRef.current
+    if (video && canvas && video.readyState === video.HAVE_ENOUGH_DATA) {
+      canvas.width = video.videoWidth
+      canvas.height = video.videoHeight
+      const ctx = canvas.getContext('2d')
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+      const code = jsQR(imageData.data, imageData.width, imageData.height)
+
+      if (code) {
+        // QR code found!
+        handleQRDetected(code.data)
+        return // stop scanning
+      }
+    }
+    animationId = requestAnimationFrame(scanFrame)
+  }
+
+  animationId = requestAnimationFrame(scanFrame)
+
+  return () => {
+    if (animationId) cancelAnimationFrame(animationId)
+  }
+}, [scanOpen])
+
+const handleQRDetected = (qrText) => {
+  alert('QR Code found: ' + qrText)
+  setScanOpen(false)
+  // TODO: send qrText to backend to register the device
+}
+  useEffect(() => {
+  fetch('http://10.175.136.50:4000/api/current')
+    .then(res => res.json())
+    .then(data => {
+      const graphData = data.map(d => ({
+        time: new Date(d.created_at).toLocaleTimeString(),
+        current: d.current_value,
+        power: d.power_value
+      }))
+
+      setCurrentData(graphData.reverse())
+    })
+    .catch(err => console.error(err))
+}, [])
 
   const statCards = [
     { label: 'Total Devices', value: totalDevices, icon: Cpu,      color: '#ff4d4f' },
@@ -112,7 +166,11 @@ export default function Stats() {
   muted
   webkit-playsinline="true"
 />
+<canvas ref={canvasRef} style={{ display: 'none' }} />
             </div>
+            {cameraError && (
+  <p style={{fontSize:13,color:'#dc3232',marginBottom:16,fontWeight:600}}>{cameraError}</p>
+)}
             <p style={{fontSize:12,color:'#bbb',marginBottom:24}}>Make sure the QR code is well lit and fully visible</p>
             <button
               onClick={() => setScanOpen(false)}
@@ -158,7 +216,7 @@ export default function Stats() {
             </button>
           </div>
           <ResponsiveContainer width="100%" height={220}>
-            <LineChart data={MONTHLY} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
+            <LineChart data={currentData} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
               <defs>
                 <linearGradient id="mo" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%"  stopColor="#4caf88" stopOpacity={0.2} />
@@ -166,10 +224,10 @@ export default function Stats() {
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.05)" />
-              <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#aaa' }} axisLine={false} tickLine={false} />
+              <XAxis dataKey="time" tick={{ fontSize: 11, fill: '#aaa' }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fontSize: 11, fill: '#aaa' }} axisLine={false} tickLine={false} />
               <Tooltip {...TOOLTIP_STYLE} />
-              <Line type="monotone" dataKey="kwh" stroke="#4caf88" strokeWidth={2.5} dot={{ r: 4, fill: '#4caf88', strokeWidth: 0 }} />
+              <Line type="monotone" dataKey="power" stroke="#4caf88" strokeWidth={2.5} dot={{ r: 4, fill: '#4caf88', strokeWidth: 0 }} />
             </LineChart>
           </ResponsiveContainer>
         </div>

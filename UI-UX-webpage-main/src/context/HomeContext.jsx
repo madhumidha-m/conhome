@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react'
 
 const HomeContext = createContext(null)
 
-const API = 'http://10.45.239.75:4000/api'
+const API = 'http://10.175.136.50:4000/api'
 
 const DEVICE_ICONS = {
   light: '💡',
