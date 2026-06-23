@@ -17,14 +17,22 @@ router.post('/', auth, async (req, res) => {
   console.log("USER:", req.user)
 
   const { device_id, room_id } = req.body
-  console.log("DEVICE:", device_id)
+  console.log("RAW DEVICE:", JSON.stringify(device_id))
+console.log("LENGTH:", device_id.length)
+
+const cleanDeviceId = device_id.trim()
+
+console.log("CLEAN DEVICE:", JSON.stringify(cleanDeviceId))
+console.log("CLEAN LENGTH:", cleanDeviceId.length)
+ 
+  console.log("DEVICE:", cleanDeviceId)
   console.log("ROOM:", room_id)
 
   try {
     // Check registry for safety
     const regCheck = await registryPool.query(
-      'SELECT * FROM device_registry WHERE esp32_id=$1',
-      [device_id]
+      'SELECT * FROM device_registry WHERE device_id=$1',
+      [cleanDeviceId]
     )
     if (regCheck.rows.length === 0) {
       return res.status(400).json({ error: 'Invalid device' })
@@ -33,36 +41,47 @@ router.post('/', auth, async (req, res) => {
     // Check if already enrolled
     const existing = await enrollPool.query(
       'SELECT * FROM enroll_table WHERE device_id=$1',
-      [device_id]
+      [cleanDeviceId]
     )
-
-    console.log("Current User:", req.user.userId)
-    console.log("Enrolled User:", existing.rows[0]?.user_id)
-
     if (existing.rows.length > 0) {
-      // Same user scanning again
-      if (String(existing.rows[0].user_id) === String(req.user.userId)) {
-        return res.json({
-          success: true,
-          message: 'Device already enrolled by you ✅'
-        })
-      }
-      // Different user trying to claim
-      return res.status(400).json({
-        error: 'Device already enrolled by another user'
-      })
-    }
+
+  console.log("Current User ID:", JSON.stringify(req.user.userId))
+  console.log("DB User ID:", JSON.stringify(existing.rows[0].user_id))
+  console.log(
+    "Equal ?",
+    String(existing.rows[0].user_id).trim() ===
+    String(req.user.userId).trim()
+  )
+
+  console.log("COMPARING:", 
+  JSON.stringify(existing.rows[0].user_id), 
+  "vs", 
+  JSON.stringify(req.user.userId)
+)
+
+if (existing.rows[0].user_id == req.user.userId) {
+    return res.json({
+      success: true,
+      message: 'Device already enrolled by you ✅'
+    })
+  }
+
+  return res.status(400).json({
+    error: 'Device already enrolled by another user'
+  })
+}
+
 
     // New enrollment — save to enroll_db
     const enroll = await enrollPool.query(
       'INSERT INTO enroll_table (device_id, user_id) VALUES ($1, $2) RETURNING *',
-      [device_id, req.user.userId]
+      [cleanDeviceId, req.user.userId]
     )
 
     // Mark as enrolled in registry_db
     await registryPool.query(
-      'UPDATE device_registry SET is_enrolled=true WHERE esp32_id=$1',
-      [device_id]
+      'UPDATE device_registry SET is_enrolled=true WHERE device_id=$1',
+      [cleanDeviceId]
     )
 
     res.json({ success: true, enroll: enroll.rows[0] })

@@ -122,7 +122,7 @@ const handleQRDetected = async (qrText) => {
       return
     }
     // Valid device — show room selection
-   setScannedDeviceId(qrText)
+   setScannedDeviceId(qrText.trim())
 setShowSetupModal(true)
   } catch (err) {
     alert('Error connecting to server: ' + err.message)
@@ -297,37 +297,38 @@ setShowSetupModal(true)
      <button
 onClick={async () => {
 
-  alert("Step 1")
+  console.log("Device =", scannedDeviceId)
 
   try {
 
-  const res = await fetch(
-    'http://10.175.136.50:4000/api/enroll',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      },
-      body: JSON.stringify({
-        device_id: scannedDeviceId
-      })
-    }
-  )
+    const res = await fetch(
+      'http://10.175.136.50:4000/api/enroll',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({
+          device_id: scannedDeviceId,
+          room_id: selectedRoomId
+          
+        })
+      }
+    )
 
   const data = await res.json()
 
   if (data.success) {
 
-       alert("Device Enrolled Successfully ✅")
+  setShowSuccess(true)
+  setShowSetupModal(false)
 
-    setShowSetupModal(false)
+} else {
 
-  } else {
+  alert(data.error || "Enrollment Failed")
 
-    alert(data.error)
-
-  }
+}
 
 } catch (err) {
 
@@ -360,6 +361,45 @@ onClick={async () => {
     </div>
   </div>
   
+)}{showSuccess && (
+  <div
+    style={{
+      position:'fixed',
+      inset:0,
+      background:'rgba(0,0,0,0.5)',
+      zIndex:999,
+      display:'flex',
+      justifyContent:'center',
+      alignItems:'center'
+    }}
+  >
+    <div
+      style={{
+        background:'white',
+        padding:'25px',
+        borderRadius:'20px',
+        width:'300px',
+        textAlign:'center'
+      }}
+    >
+      <h2>Success ✅</h2>
+
+      <p>Device Enrolled Successfully</p>
+
+      <button
+        onClick={() => setShowSuccess(false)}
+        style={{
+          padding:'10px 20px',
+          borderRadius:'10px',
+          border:'none',
+          background:'#847f7c',
+          color:'white'
+        }}
+      >
+        OK
+      </button>
+    </div>
+  </div>
 )}
 {scanOpen && (
         <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.5)',backdropFilter:'blur(6px)',zIndex:100,display:'flex',alignItems:'center',justifyContent:'center'}}>
