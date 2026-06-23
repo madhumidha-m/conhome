@@ -40,6 +40,11 @@ export default function Stats() {
   const videoRef = useRef(null)
   const canvasRef = useRef(null)
   const totalRooms = rooms.length
+  const [scannedDeviceId, setScannedDeviceId] = useState(null)
+const [showEnrollModal, setShowEnrollModal] = useState(false)
+const [selectedRoomId, setSelectedRoomId] = useState('')
+const [showSetupModal, setShowSetupModal] = useState(false)
+const [showSuccess, setShowSuccess] = useState(false)
 
   const [cameraError, setCameraError] = useState('')
 
@@ -97,12 +102,33 @@ useEffect(() => {
     if (animationId) cancelAnimationFrame(animationId)
   }
 }, [scanOpen])
-
-const handleQRDetected = (qrText) => {
-  alert('QR Code found: ' + qrText)
+const handleQRDetected = async (qrText) => {
+  // Stop camera
+  if (videoRef.current?.srcObject) {
+    videoRef.current.srcObject.getTracks().forEach(t => t.stop())
+  }
   setScanOpen(false)
-  // TODO: send qrText to backend to register the device
+  alert('QR Scanned: ' + qrText)
+
+  // Validate with backend
+  const token = localStorage.getItem('token')
+  try {
+    const res = await fetch(`http://10.175.136.50:4000/api/registry/validate/${qrText}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    const data = await res.json()
+    if (!data.valid) {
+      alert(data.message)
+      return
+    }
+    // Valid device — show room selection
+   setScannedDeviceId(qrText)
+setShowSetupModal(true)
+  } catch (err) {
+    alert('Error connecting to server: ' + err.message)
+  }
 }
+
   useEffect(() => {
   fetch('http://10.175.136.50:4000/api/current')
     .then(res => res.json())
@@ -149,9 +175,193 @@ const handleQRDetected = (qrText) => {
 
 </div>
       </div>
+      {/* Enroll Modal */}
+{/*showEnrollModal && (
+  <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.5)',backdropFilter:'blur(6px)',zIndex:100,display:'flex',alignItems:'center',justifyContent:'center'}}>
+    <div style={{background:'white',borderRadius:24,padding:36,width:360,textAlign:'center',boxShadow:'0 20px 60px rgba(0,0,0,0.25)'}}>
+      <h3 style={{fontSize:20,fontWeight:800,color:'#1a1a2e',marginBottom:8}}>Device Found! ✅</h3>
+      <p style={{fontSize:13,color:'#888',marginBottom:8}}>Device ID: {scannedDeviceId}</p>
+      <p style={{fontSize:14,fontWeight:700,color:'#333',marginBottom:12}}>Select Room for this ESP32:</p>
+      <select
+        value={selectedRoomId}
+        onChange={e => setSelectedRoomId(e.target.value)}
+        style={{width:'100%',padding:'10px 14px',borderRadius:10,border:'1.5px solid #ddd',fontSize:14,marginBottom:20,fontFamily:'inherit'}}
+      >
+        <option value="">-- Select Room --</option>
+        {rooms.map(r => (
+          <option key={r.id} value={r.id}>{r.name}</option>
+        ))}
+      </select>
+      <div style={{display:'flex',gap:10}}>
+        <button
+          onClick={() => setShowEnrollModal(false)}
+          style={{flex:1,padding:13,borderRadius:12,border:'none',background:'#f0f0f0',color:'#666',cursor:'pointer',fontFamily:'inherit',fontSize:14,fontWeight:700}}
+        >Cancel</button>
+        <button
+          onClick={async () => {
+            if (!selectedRoomId) { alert('Please select a room'); return }
+            const token = localStorage.getItem('token')
+            try {
+              const res = await fetch('http://192.168.29.10:4000/api/enroll', {
+                method: 'POST',
+                headers: { 'Content-Type':'application/json', Authorization:`Bearer ${token}` },
+                body: JSON.stringify({ device_id: scannedDeviceId, room_id: selectedRoomId })
+              })
+              const data = await res.json()
+              if (data.success) {
+                alert('ESP32 enrolled successfully to room! ✅')
+                setShowEnrollModal(false)
+                setScannedDeviceId(null)
+                setSelectedRoomId('')
+              } else {
+                alert('Error: ' + data.error)
+              }
+            } catch (err) {
+              alert('Server error: ' + err.message)
+            }
+          }}
+          style={{flex:1,padding:13,borderRadius:12,border:'none',background:'#6B7280',color:'white',cursor:'pointer',fontFamily:'inherit',fontSize:14,fontWeight:700}}
+        >Enroll Device</button>
+      </div>
+    </div>
+  </div>
+)
+}*/}
 
-      {/* QR Scanner Popup */}
-      {scanOpen && (
+
+    
+      {showSetupModal && (
+  <div
+    style={{
+      position: 'fixed',
+      inset: 0,
+      background: 'rgba(0,0,0,0.5)',
+      backdropFilter: 'blur(6px)',
+      zIndex: 100,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    }}
+  >
+    <div
+      style={{
+        background: 'white',
+        borderRadius: 24,
+        padding: 30,
+        width: 360,
+        textAlign: 'left'
+      }}
+    >
+      <h2 style={{ color: '#3b4140' }}>
+        Add ESP32 Device
+      </h2>
+
+      <p><b>Step 1:</b> Power ON the ESP32.</p>
+
+      <p>
+        <b>Step 2:</b> Connect to WiFi:
+        <br />
+        <b>ESP32_SETUP</b>
+      </p>
+
+      <p>
+        Password:
+        <b> setup1234</b>
+      </p>
+
+      <p>
+        <b>Step 3:</b> Open setup page and enter your WiFi credentials.
+      </p>
+
+      <button
+        onClick={() => {
+          window.open(
+            'http://192.168.4.1',
+            '_blank'
+          )
+        }}
+        style={{
+          width: '100%',
+          padding: 12,
+          marginTop: 10,
+          border: 'none',
+          borderRadius: 10,
+          background: '#847f7c',
+          color: 'white',
+          fontWeight: 'bold'
+        }}
+      >
+        Open Setup Page
+      </button>
+
+     <button
+onClick={async () => {
+
+  alert("Step 1")
+
+  try {
+
+  const res = await fetch(
+    'http://10.175.136.50:4000/api/enroll',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      },
+      body: JSON.stringify({
+        device_id: scannedDeviceId
+      })
+    }
+  )
+
+  const data = await res.json()
+
+  if (data.success) {
+
+       alert("Device Enrolled Successfully ✅")
+
+    setShowSetupModal(false)
+
+  } else {
+
+    alert(data.error)
+
+  }
+
+} catch (err) {
+
+  alert("Enrollment Failed ❌")
+
+}
+}}
+
+  style={{
+    width:'100%',
+    padding:12,
+    marginTop:10,
+    borderRadius:10
+  }}
+>
+  I've Entered Credentials
+</button>
+
+      <button
+        onClick={() => setShowSetupModal(false)}
+        style={{
+          width: '100%',
+          padding: 12,
+          marginTop: 10,
+          borderRadius: 10
+        }}
+      >
+        Close
+      </button>
+    </div>
+  </div>
+  
+)}
+{scanOpen && (
         <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.5)',backdropFilter:'blur(6px)',zIndex:100,display:'flex',alignItems:'center',justifyContent:'center'}}>
           <div style={{background:'white',borderRadius:24,padding:36,width:360,textAlign:'center',boxShadow:'0 20px 60px rgba(0,0,0,0.25)'}}>
             <div style={{fontSize:13,fontWeight:700,color:'#9ca3af',marginBottom:8,textTransform:'uppercase',letterSpacing:1}}>Add Device</div>

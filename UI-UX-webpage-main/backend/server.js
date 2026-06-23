@@ -13,6 +13,8 @@ app.use('/api/members',  require('./routes/members'))
 app.use('/api/settings', require('./routes/settings'))
 app.use('/api/alerts',  require('./routes/alerts'))
 app.use('/api/current', require('./routes/current'))
+app.use('/api/registry', require('./routes/registry'))
+app.use('/api/enroll',  require('./routes/enroll'))
 app.get('/', (req, res) => res.send('AutoHome API running'))
 
 app.listen(process.env.PORT, () => {
