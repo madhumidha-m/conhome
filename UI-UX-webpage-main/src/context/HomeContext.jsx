@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react'
 
 const HomeContext = createContext(null)
 
-const API = 'http://10.175.136.50:4000/api'
+const API = '/api'
 
 const DEVICE_ICONS = {
   light: '💡',
@@ -87,7 +87,7 @@ export function HomeProvider({ children }) {
           const devRes = await fetch(`${API}/devices/${r.room_id}`, { headers: authHeaders() })
           const devData = await devRes.json()
           const devices = Array.isArray(devData) ? devData.map(d => ({
-  id: d.device_id,
+  id: appliance_id,
   name: d.appliance_name,
   type: d.device_name,
   on: d.power === 1,
@@ -154,9 +154,9 @@ export function HomeProvider({ children }) {
   }
 
   // ─── DEVICES ──────────────────────────────────────────────
-  const addDevice = async (roomId, name, type, gpioPin = 0) => {
+  const addAppliance = async (roomId, name, type, gpioPin = 0) => {
   try {
-    const res = await fetch(`${API}/devices`, {
+    const res = await fetch(`${API}/appliances`, {
       method: 'POST',
       headers: authHeaders(),
      body: JSON.stringify({
@@ -170,7 +170,7 @@ export function HomeProvider({ children }) {
       setRooms(prev => prev.map(r =>
         r.id === roomId
           ? { ...r, devices: [...r.devices, {
-              id: data.device_id,
+              id: data.appliance_id,
             name: data.appliance_name,
 type: data.device_name,
               on: false,
@@ -248,7 +248,7 @@ type: data.device_name,
         }
       ))
     } catch (err) {
-      console.error('renameDevice error:', err)
+      console.error('renameAppliance error:', err)
     }
   }
 

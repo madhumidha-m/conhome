@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const enrollPool = require('../db_enroll')
-const registryPool = require('../db_registry')
+const registerPool = require('../db_register')
 const jwt = require('jsonwebtoken')
 
 function auth(req, res, next) {
@@ -31,7 +31,7 @@ console.log("CLEAN LENGTH:", cleanDeviceId.length)
   try {
     // Check registry for safety
     const regCheck = await registryPool.query(
-      'SELECT * FROM device_registry WHERE device_id=$1',
+      'SELECT * FROM register_table WHERE device_id=$1',
       [cleanDeviceId]
     )
     if (regCheck.rows.length === 0) {
@@ -80,7 +80,7 @@ if (existing.rows[0].user_id == req.user.userId) {
 
     // Mark as enrolled in registry_db
     await registryPool.query(
-      'UPDATE device_registry SET is_enrolled=true WHERE device_id=$1',
+      'UPDATE register_table SET is_enrolled=true WHERE device_id=$1',
       [cleanDeviceId]
     )
 
