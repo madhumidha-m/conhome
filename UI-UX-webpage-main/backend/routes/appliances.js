@@ -28,7 +28,7 @@ router.get('/:roomId', auth, async (req, res) => {
 // Add device
 router.post('/', auth, async (req, res) => {
   try {
-    const { appliance_name, device_name, gpio_pin, room_id } = req.body
+    const { appliance_name, device_id, gpio_pin, room_id } = req.body
 
     // Verify room belongs to this user
     const roomCheck = await pool.query(
@@ -40,8 +40,8 @@ router.post('/', auth, async (req, res) => {
     }
 
     const result = await pool.query(
-      'INSERT INTO appliances (appliance_id, appliance_name, device_name, gpio_pin, room_id, power, user_id) VALUES (gen_random_uuid(), $1, $2, $3, $4, 0, $5) RETURNING *',
-      [appliance_name, device_name, gpio_pin, room_id, req.user.userId]
+      'INSERT INTO appliances (appliance_id, appliance_name, device_id, gpio_pin, room_id, power, user_id) VALUES (gen_random_uuid(), $1, $2, $3, $4, 0, $5) RETURNING *',
+      [appliance_name, device_id, gpio_pin, room_id, req.user.userId]
     )
     res.json(result.rows[0])
   } catch (err) {
@@ -112,7 +112,7 @@ router.delete('/:id', auth, async (req, res) => {
     if (check.rows.length === 0) {
       return res.status(403).json({ error: 'Device not found or access denied' })
     }
-    await pool.query('DELETE FROM applainces WHERE appliance_id=$1', [req.params.id])
+    await pool.query('DELETE FROM appliances WHERE appliance_id=$1', [req.params.id])
     res.json({ success: true })
   } catch (err) {
     console.error('DELETE appliance error:', err)

@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const pool = require('../db_register')
+const enrollPool = require('../db_enroll')
 const jwt = require('jsonwebtoken')
 
 function auth(req, res, next) {
@@ -9,7 +10,6 @@ function auth(req, res, next) {
   catch { res.status(401).json({ error: 'Invalid token' }) }
 }
 
-// Validate scanned QR code
 router.get('/validate/:deviceId', auth, async (req, res) => {
   try {
     const result = await pool.query(
@@ -20,9 +20,20 @@ router.get('/validate/:deviceId', auth, async (req, res) => {
       return res.json({ valid: false, message: 'Device not found in registry' })
     }
     if (result.rows[0].is_enrolled) {
+      const enrolled = await enrollPool.query(
+        'SELECT * FROM enroll_table WHERE device_id=$1',
+        [req.params.deviceId]
+      )
+      if (enrolled.rows.length > 0) {
+        const dbUserId = String(enrolled.rows[0].user_id).trim()
+        const tokenUserId = String(req.user.userId).trim()
+        if (dbUserId === tokenUserId) {
+          return res.json({ valid: true, device: result.rows[0], alreadyEnrolled: true })
+        }
+      }
       return res.json({ valid: false, message: 'Device already enrolled by another user' })
     }
-    res.json({ valid: true, device: result.rows[0] })
+    res.json({ valid: true, device: result.rows[0], alreadyEnrolled: false })
   } catch (err) {
     res.status(500).json({ error: err.message })
   }

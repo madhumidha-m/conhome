@@ -113,7 +113,7 @@ const handleQRDetected = async (qrText) => {
   // Validate with backend
   const token = localStorage.getItem('token')
   try {
-    const res = await fetch(`http://10.175.136.50:4000/api/registry/validate/${qrText}`, {
+    const res = await fetch(`/api/register/validate/${qrText}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
     const data = await res.json()
@@ -130,7 +130,7 @@ setShowSetupModal(true)
 }
 
   useEffect(() => {
-  fetch('http://10.175.136.50:4000/api/current')
+  fetch('/api/current')
     .then(res => res.json())
     .then(data => {
       const graphData = data.map(d => ({
@@ -202,7 +202,7 @@ setShowSetupModal(true)
             if (!selectedRoomId) { alert('Please select a room'); return }
             const token = localStorage.getItem('token')
             try {
-              const res = await fetch('http://192.168.29.10:4000/api/enroll', {
+              const res = await fetch('/api/enroll', {
                 method: 'POST',
                 headers: { 'Content-Type':'application/json', Authorization:`Bearer ${token}` },
                 body: JSON.stringify({ device_id: scannedDeviceId, room_id: selectedRoomId })
@@ -302,7 +302,7 @@ onClick={async () => {
   try {
 
     const res = await fetch(
-      'http://10.175.136.50:4000/api/enroll',
+      '/api/enroll',
       {
         method: 'POST',
         headers: {
@@ -310,9 +310,7 @@ onClick={async () => {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         },
         body: JSON.stringify({
-          device_id: scannedDeviceId,
-          room_id: selectedRoomId
-          
+          device_id: scannedDeviceId
         })
       }
     )

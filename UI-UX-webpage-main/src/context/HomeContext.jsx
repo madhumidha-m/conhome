@@ -87,9 +87,9 @@ export function HomeProvider({ children }) {
           const devRes = await fetch(`${API}/devices/${r.room_id}`, { headers: authHeaders() })
           const devData = await devRes.json()
           const devices = Array.isArray(devData) ? devData.map(d => ({
-  id: appliance_id,
+  id: d.appliance_id,
   name: d.appliance_name,
-  type: d.device_name,
+  
   on: d.power === 1,
   gpio: d.gpio_pin,
 })) : []
@@ -161,7 +161,7 @@ export function HomeProvider({ children }) {
       headers: authHeaders(),
      body: JSON.stringify({
   appliance_name: name,
-  device_name: type,
+  
   gpio_pin: gpioPin,
   room_id: roomId,
 }),
@@ -172,7 +172,7 @@ export function HomeProvider({ children }) {
           ? { ...r, devices: [...r.devices, {
               id: data.appliance_id,
             name: data.appliance_name,
-type: data.device_name,
+
               on: false,
               gpio: data.gpio_pin,
             }]}
@@ -370,7 +370,7 @@ type: data.device_name,
   return (
     <HomeContext.Provider value={{
       rooms, addRoom, removeRoom, editRoom,
-      addDevice, toggleDevice, removeDevice, renameDevice,
+      addAppliance, toggleDevice, removeDevice, renameDevice,
       members, addMember, removeMember,
       notifications, dismissNotification,
       doorLocked, setDoorLocked,

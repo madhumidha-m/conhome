@@ -30,7 +30,8 @@ console.log("CLEAN LENGTH:", cleanDeviceId.length)
 
   try {
     // Check registry for safety
-    const regCheck = await registryPool.query(
+    console.log("STEP1: About to check register DB")
+    const regCheck = await registerPool.query(
       'SELECT * FROM register_table WHERE device_id=$1',
       [cleanDeviceId]
     )
@@ -38,11 +39,13 @@ console.log("CLEAN LENGTH:", cleanDeviceId.length)
       return res.status(400).json({ error: 'Invalid device' })
     }
 
+    console.log("STEP2: regCheck done, rows:", regCheck.rows.length)
     // Check if already enrolled
     const existing = await enrollPool.query(
       'SELECT * FROM enroll_table WHERE device_id=$1',
       [cleanDeviceId]
     )
+    console.log("STEP3: existing check done, rows:", existing.rows.length)
     if (existing.rows.length > 0) {
 
   console.log("Current User ID:", JSON.stringify(req.user.userId))
@@ -59,13 +62,15 @@ console.log("CLEAN LENGTH:", cleanDeviceId.length)
   JSON.stringify(req.user.userId)
 )
 
-if (existing.rows[0].user_id == req.user.userId) {
+const dbUserId = String(existing.rows[0].user_id).trim()
+const tokenUserId = String(req.user.userId).trim()
+console.log("FINAL COMPARE:", dbUserId, "===", tokenUserId, ":", dbUserId === tokenUserId)
+if (dbUserId === tokenUserId) {
     return res.json({
       success: true,
-      message: 'Device already enrolled by you ✅'
+      message: 'Device already enrolled by you'
     })
   }
-
   return res.status(400).json({
     error: 'Device already enrolled by another user'
   })
@@ -79,7 +84,7 @@ if (existing.rows[0].user_id == req.user.userId) {
     )
 
     // Mark as enrolled in registry_db
-    await registryPool.query(
+    await registerPool.query(
       'UPDATE register_table SET is_enrolled=true WHERE device_id=$1',
       [cleanDeviceId]
     )

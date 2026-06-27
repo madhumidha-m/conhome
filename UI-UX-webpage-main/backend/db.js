@@ -9,4 +9,8 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD,
 })
 
+pool.connect()
+  .then(() => console.log('AutoHome DB connected'))
+  .catch(err => console.error('AutoHome DB error:', err.message))
+
 module.exports = pool

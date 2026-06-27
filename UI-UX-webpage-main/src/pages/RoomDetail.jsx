@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useHome } from '../context/HomeContext'
-import DeviceCard from '../components/DeviceCard'
+import DeviceCard from '../components/ApplianceCard'
 import Modal from '../components/Modal'
 import styles from './RoomDetail.module.css'
 
 export default function RoomDetail() {
   const { roomId } = useParams()
-  const { rooms, addDevice } = useHome()
+  const { rooms, addAppliance } = useHome()
   const room = rooms.find(r => r.id === roomId)
 
   const [showModal, setShowModal] = useState(false)
@@ -23,7 +23,7 @@ export default function RoomDetail() {
 
   const handleAdd = () => {
     if (!devName.trim()) return
-    addDevice(roomId, devName.trim(), deviceType, gpioPin)
+    addAppliance(roomId, devName.trim(), deviceType, gpioPin)
     setDevName('')
     setGpioPin(0)
     setDeviceType('local')

@@ -8,7 +8,7 @@ import Auth from './pages/Auth'
 import Dashboard from './pages/Dashboard'
 import Rooms from './pages/Rooms'
 import RoomDetail from './pages/RoomDetail'
-import Devices from './pages/Devices'
+import Appliances from './pages/Appliances'
 import Stats from './pages/Stats'
 import Members from './pages/Members'
 import Settings from './pages/Settings'
@@ -30,7 +30,7 @@ function AppRoutes() {
        <Route path="dashboard" element={<Stats />} />
         <Route path="rooms" element={<Rooms />} />
         <Route path="rooms/:roomId" element={<RoomDetail />} />
-        <Route path="devices" element={<Devices />} />
+        <Route path="appliances" element={<Appliances />} />
         <Route path="stats" element={<Stats />} />
         <Route path="members" element={<Members />} />
         <Route path="settings" element={<Settings />} />

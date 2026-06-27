@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useHome } from '../context/HomeContext'
 import DeviceCard from '../components/ApplianceCard'
 import PageHeader from '../components/PageHeader'
-import styles from './Devices.module.css'
+import styles from './Appliances.module.css'
 import RoomIcon from '../components/RoomIcon'
 import { LayoutGrid, Zap, Power } from 'lucide-react'
 
