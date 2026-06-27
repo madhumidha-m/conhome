@@ -244,15 +244,15 @@ setShowSetupModal(true)
     }}
   >
     <div
-      style={{
+      style={
         background: 'white',
         borderRadius: 24,
         padding: 30,
         width: 360,
         textAlign: 'left'
-      }}
+      }
     >
-      <h2 style={{ color: '#3b4140' }}>
+      <h2 style={ color: '#3b4140' }>
         Add ESP32 Device
       </h2>
 
@@ -279,8 +279,8 @@ setShowSetupModal(true)
             'http://192.168.4.1',
             '_blank'
           )
-        }}
-        style={{
+        }
+        style={
           width: '100%',
           padding: 12,
           marginTop: 10,
@@ -289,7 +289,7 @@ setShowSetupModal(true)
           background: '#847f7c',
           color: 'white',
           fontWeight: 'bold'
-        }}
+        }
       >
         Open Setup Page
       </button>
@@ -318,22 +318,20 @@ onClick={async () => {
   const data = await res.json()
 
   if (data.success) {
-
-  setShowSuccess(true)
-  setShowSetupModal(false)
-
-} else {
-
-  alert(data.error || "Enrollment Failed")
-
-}
-
+    setShowSetupModal(false)
+    if (data.message && data.message.includes("already enrolled by you")) {
+      alert("Device already enrolled by you ✅")
+    } else {
+      setShowSuccess(true)
+    }
+  } else {
+    alert(data.error || "Enrollment Failed")
+  }
 } catch (err) {
 
   alert("Enrollment Failed ❌")
 
 }
-}}
 
   style={{
     width:'100%',
