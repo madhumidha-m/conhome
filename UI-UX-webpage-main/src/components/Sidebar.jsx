@@ -10,7 +10,7 @@ import {
 const NAV = [
   { to: '/',              icon: LayoutDashboard, label: 'Home' },
   { to: '/rooms',         icon: DoorOpen,        label: 'Rooms' },
-  { to: '/devices',       icon: Lightbulb,       label: 'Appliances' },
+  { to: '/appliances',       icon: Lightbulb,       label: 'Appliances' },
   { to: '/members',       icon: Users,           label: 'Members' },
   { to: '/notifications', icon: Bell,            label: 'Alerts' },
   { to: '/settings',      icon: Settings,        label: 'Settings' },

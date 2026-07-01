@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useHome } from '../context/HomeContext'
 import DeviceCard from '../components/ApplianceCard'
@@ -14,6 +14,19 @@ export default function RoomDetail() {
   const [devName, setDevName] = useState('')
   const [gpioPin, setGpioPin] = useState(0)
   const [deviceType, setDeviceType] = useState('local')
+  const [enrolledDevices, setEnrolledDevices] = useState([])
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    fetch('/api/enroll', {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) setEnrolledDevices(data)
+      })
+      .catch(err => console.error('Failed to fetch enrolled devices:', err))
+  }, [])
 
   if (!room) return (
     <div style={{ textAlign: 'center', padding: 40 }}>
@@ -127,6 +140,9 @@ export default function RoomDetail() {
   }}
 >
   <option value="local">Local / no ESP32</option>
+  {enrolledDevices.map(d => (
+    <option key={d.device_id} value={d.device_id}>{d.device_id}</option>
+  ))}
 </select>
           <div style={{ display:'flex', gap:10, marginTop:20 }}>
             <button

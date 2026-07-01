@@ -84,7 +84,7 @@ export function HomeProvider({ children }) {
       // For each room, load its devices
       const roomsWithDevices = await Promise.all(
         data.map(async (r) => {
-          const devRes = await fetch(`${API}/devices/${r.room_id}`, { headers: authHeaders() })
+          const devRes = await fetch(`${API}/appliances/${r.room_id}`, { headers: authHeaders() })
           const devData = await devRes.json()
           const devices = Array.isArray(devData) ? devData.map(d => ({
   id: d.appliance_id,
@@ -161,7 +161,7 @@ export function HomeProvider({ children }) {
       headers: authHeaders(),
      body: JSON.stringify({
   appliance_name: name,
-  
+  device_id: type !== 'local' ? type : null,
   gpio_pin: gpioPin,
   room_id: roomId,
 }),

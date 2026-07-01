@@ -10,7 +10,7 @@ import {
 const BOTTOM_NAV = [
   { to: '/stats',        icon: LayoutDashboard, label: 'Home' },
   { to: '/rooms',   icon: DoorOpen,        label: 'Rooms' },
- { to: '/devices', icon: Lightbulb, label: 'Appliances' },
+ { to: '/appliances', icon: Lightbulb, label: 'Appliances' },
   { to: '/members', icon: Users,           label: 'Members' },
   { to: '/settings',icon: Settings,        label: 'Settings' },
 ]

@@ -20,12 +20,12 @@
 
   border-radius:999px;
 
-  background:white;
+  background:var(--glass-strong);
 
   font-size:14px;
   font-weight:700;
 
-  color:#666;
+  color:var(--text-light);
 
   cursor:pointer;
 
@@ -51,9 +51,9 @@
 /* ACTIVE BUTTON */
 
 .filterActive{
-  background:linear-gradient(135deg,'gray');
+  background:#393a3b;
 
-  color:black;
+  color:white;
 
   box-shadow:0 8px 20px rgba(72, 72, 75, 0.35);
 }

@@ -22,7 +22,7 @@
 .toggle {
   width: 44px; height: 24px;
   border-radius: 12px;
-  background: #ddd;
+  background: var(--glass-border);
   border: none;
   position: relative;
   transition: background 0.25s;
@@ -63,7 +63,7 @@
   position: absolute;
   bottom: 10px;
   right: 10px;
-  background: #f1f3f4;
+  background: var(--glass-border);
   border: none;
   border-radius: 8px;
   width: 34px;
@@ -74,7 +74,7 @@ height: 34px;
   cursor: pointer;
   opacity: 1;
   transition: all 0.2s;
-  color: #6b7280;
+  color: var(--text-light);
 }
 
 .editBtn:hover { 

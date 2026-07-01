@@ -45,13 +45,12 @@ export default function ApplianceCard({ roomId, device }) {
   return (
     <>
       <div
-        className={styles.card}
-        style={{ background: device.on ? colors.bg : '#f9f9f9' }}
+        className={`${styles.card} glass`}
       >
         <div className={styles.topRow}>
           <span
             className={styles.iconWrap}
-            style={{ background: device.on ? colors.accent + '22' : '#eee' }}
+            style={{ background: device.on ? colors.accent + '22' : 'var(--accent-soft)' }}
           >
             <span style={{ fontSize: 22 }}>{emoji}</span>
           </span>
