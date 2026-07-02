@@ -105,8 +105,8 @@ export default function Graphs() {
           <ArrowLeft size={16} /> Back
         </button>
         <div>
-          <h1 style={{fontFamily:'Sora,sans-serif',fontSize:22,fontWeight:600,color:'#1a1a2e'}}>All Graphs</h1>
-          <p style={{fontSize:13,color:'#7a7a9a'}}>Detailed energy consumption</p>
+          <h1 style={{fontFamily:'Sora,sans-serif',fontSize:22,fontWeight:600,color:'var(--text-dark)'}}>All Graphs</h1>
+          <p style={{fontSize:13,color:'var(--text-light)'}}>Detailed energy consumption</p>
         </div>
       </div>
 

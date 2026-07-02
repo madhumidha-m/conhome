@@ -22,7 +22,7 @@
 .toggle {
   width: 44px; height: 24px;
   border-radius: 12px;
-  background: var(--glass-border);
+  background: #6b7280;
   border: none;
   position: relative;
   transition: background 0.25s;
