@@ -16,7 +16,7 @@ export default function Auth() {
   const { login, signup } = useAuth()
   const navigate = useNavigate()
 
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
   e.preventDefault()
   setError('')
 
@@ -31,16 +31,36 @@ export default function Auth() {
 
   setLoading(true)
 
-  const result = mode === 'login'
-    ? await login(email.trim(), password)
-    : await signup(name.trim(), email.trim(), password)
+  const result =
+    mode === 'login'
+      ? await login(email.trim(), password)
+      : await signup(name.trim(), email.trim(), password)
 
+  // Login failed
   if (result.error) {
     setError(result.error)
     setLoading(false)
+    return
   }
-}
 
+  // Login success
+  if (mode === 'login') {
+    setLoading(false)
+    return
+  }
+
+  // Signup success → Go to OTP page
+
+
+  
+  navigate('/verify-otp', {
+    state: {
+      email: email.trim()
+    }
+  })
+
+  setLoading(false)
+}
   const switchMode = () => {
     setMode(m => m === 'login' ? 'signup' : 'login')
     setError('')

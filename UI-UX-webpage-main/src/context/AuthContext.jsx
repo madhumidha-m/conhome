@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from 'react'
 
 const AuthContext = createContext(null)
-const API = '/api'
+const API = 'http://10.200.163.50:4000/api'
 
  export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
@@ -39,7 +39,16 @@ return { success: true }
       })
       const data = await res.json()
       if (!res.ok) return { error: data.error || 'Registration failed' }
-      return await login(email, password)
+      if (data.success) {
+  return {
+    success: true,
+    email
+  }
+}
+
+return {
+  error: data.error
+}
     } catch (err) {
       return { error: 'Server not reachable. Is backend running?' }
     }

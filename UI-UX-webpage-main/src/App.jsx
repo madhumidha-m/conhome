@@ -14,6 +14,7 @@ import Members from './pages/Members'
 import Settings from './pages/Settings'
 import Notifications from './pages/Notifications'
 import Graphs from './pages/Graphs'
+import VerifyOTP from './pages/VerifyOTP'
 
 function PrivateRoute({ children }) {
   const { user } = useAuth()
@@ -25,6 +26,7 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={user ? <Navigate to="/dashboard" replace /> : <Auth />} />
+       <Route path="/verify-otp" element={<VerifyOTP />} />
       <Route path="/" element={<PrivateRoute><Layout /></PrivateRoute>}>
         <Route index element={<Navigate to="/dashboard" replace />} />
        <Route path="dashboard" element={<Stats />} />
@@ -36,6 +38,7 @@ function AppRoutes() {
         <Route path="settings" element={<Settings />} />
         <Route path="graphs" element={<Graphs />} />
         <Route path="notifications" element={<Notifications />} />
+       
       </Route>
       <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
