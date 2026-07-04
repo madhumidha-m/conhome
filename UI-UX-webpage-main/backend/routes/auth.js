@@ -112,12 +112,65 @@ router.post('/verify-otp', async (req, res) => {
       otp,
       otpData.otp_hash
     )
-
     if (!validOTP) {
-      return res.status(400).json({
-        error: 'Invalid OTP'
-      })
-    }
+
+  // Increase wrong OTP attempts
+  await pool.query(
+    `UPDATE otp_verifications
+     SET attempts = attempts + 1
+     WHERE email = $1`,
+    [email]
+  )
+
+  // Get updated attempt count
+  const result = await pool.query(
+    `SELECT attempts
+     FROM otp_verifications
+     WHERE email = $1`,
+    [email]
+  )
+
+  const attempts = result.rows[0].attempts
+
+  // Maximum 5 attempts
+  if (attempts >= 5) {
+
+  // Generate new OTP
+  const newOTP = otpGenerator.generate(6, {
+    upperCaseAlphabets: false,
+    lowerCaseAlphabets: false,
+    specialChars: false
+  })
+
+  // Hash OTP
+  const otpHash = await bcrypt.hash(newOTP, 10)
+
+  // Save new OTP and reset attempts
+  await pool.query(
+    `UPDATE otp_verifications
+     SET otp_hash=$1,
+         attempts=0,
+         expires_at=NOW()+INTERVAL '10 minutes'
+     WHERE email=$2`,
+    [otpHash, email]
+  )
+
+  // Send new OTP
+  await sendOTP(email, newOTP)
+
+  return res.status(400).json({
+    error: "Too many incorrect attempts. A new OTP has been sent to your email.",
+    reset: true
+  })
+
+}
+
+  return res.status(400).json({
+    error: `Invalid OTP. ${5 - attempts} attempt(s) remaining.`
+  })
+
+}
+
 
     // Read pending user
     const pending = await pool.query(

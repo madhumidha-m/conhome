@@ -25,6 +25,7 @@ export default function VerifyOTP() {
     }, [seconds])
 
     const verifyOTP = async()=>{
+        console.log("Verify button clicked")
 
         setLoading(true)
         setError('')
@@ -48,6 +49,7 @@ export default function VerifyOTP() {
             const data = await res.json()
 
             if(!res.ok){
+                 console.log("Wrong OTP")
                 setError(data.error)
                 setLoading(false)
                 return
