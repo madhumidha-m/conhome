@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import './Forgotpassword.css'
+import './Authcommon.css'
 
 export default function Forgotpassword() {
 
