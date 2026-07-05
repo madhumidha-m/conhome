@@ -148,6 +148,23 @@ const handleSubmit = async (e) => {
                 onChange={e => setPassword(e.target.value)}
                  autoComplete="new-password"
               />
+              {mode === 'login' && (
+  <div style={{ textAlign: 'right', marginTop: '8px' }}>
+    <button
+      type="button"
+      onClick={() => navigate('/forgot-password')}
+      style={{
+        border: 'none',
+        background: 'none',
+        color: '#2563eb',
+        cursor: 'pointer',
+        fontSize: '14px'
+      }}
+    >
+      Forgot Password?
+    </button>
+  </div>
+)}
             </div>
 
             {mode === 'signup' && (

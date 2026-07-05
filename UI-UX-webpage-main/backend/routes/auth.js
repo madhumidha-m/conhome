@@ -5,6 +5,10 @@ const jwt = require('jsonwebtoken')
 const otpGenerator = require('otp-generator')
 const sendOTP = require('../utils/mail')
 
+router.get('/test', (req, res) => {
+  res.send("Auth route working");
+});
+
 // Register
 router.post('/register', async (req, res) => {
 
@@ -284,6 +288,184 @@ router.post('/resend-otp', async (req, res) => {
     res.json({
       success: true,
       message: 'OTP Sent Again'
+    })
+
+  } catch (err) {
+
+    res.status(500).json({
+      error: err.message
+    })
+
+  }
+
+})
+// Forgot Password
+console.log("Forgot Password route loaded")
+router.post('/forgot-password', async (req, res) => {
+
+  const { email } = req.body
+
+  try {
+
+    // Check whether the email exists
+    const user = await pool.query(
+      'SELECT * FROM users WHERE email = $1',
+      [email]
+    )
+
+    if (user.rows.length === 0) {
+      return res.status(400).json({
+        error: 'No account found with this email.'
+      })
+    }
+
+    // Generate OTP
+    const otp = otpGenerator.generate(6, {
+      upperCaseAlphabets: false,
+      lowerCaseAlphabets: false,
+      specialChars: false
+    })
+
+    // Hash OTP
+    const otpHash = await bcrypt.hash(otp, 10)
+
+    // Save in password_resets table
+    await pool.query(
+      `INSERT INTO password_resets
+      (email, otp_hash, expires_at)
+      VALUES ($1, $2, NOW() + INTERVAL '10 minutes')
+      ON CONFLICT(email)
+      DO UPDATE SET
+        otp_hash = EXCLUDED.otp_hash,
+        attempts = 0,
+        expires_at = NOW() + INTERVAL '10 minutes'`,
+      [email, otpHash]
+    )
+
+    // Send email
+    await sendOTP(email, otp)
+
+    res.json({
+      success: true,
+      message: 'Reset OTP sent successfully.'
+    })
+
+  } catch (err) {
+
+    res.status(500).json({
+      error: err.message
+    })
+
+  }
+
+})
+// Verify Reset OTP
+router.post('/verify-reset-otp', async (req, res) => {
+
+  const { email, otp } = req.body
+
+  try {
+
+    const result = await pool.query(
+      'SELECT * FROM password_resets WHERE email=$1',
+      [email]
+    )
+
+    if (result.rows.length === 0) {
+      return res.status(400).json({
+        error: 'OTP not found'
+      })
+    }
+
+    const reset = result.rows[0]
+
+    // OTP Expired
+    if (new Date() > new Date(reset.expires_at)) {
+      return res.status(400).json({
+        error: 'OTP Expired'
+      })
+    }
+
+    // Compare OTP
+    const validOTP = await bcrypt.compare(
+      otp,
+      reset.otp_hash
+    )
+
+    if (!validOTP) {
+
+      await pool.query(
+        `UPDATE password_resets
+         SET attempts = attempts + 1
+         WHERE email = $1`,
+        [email]
+      )
+
+      const updated = await pool.query(
+        `SELECT attempts
+         FROM password_resets
+         WHERE email = $1`,
+        [email]
+      )
+
+      const attempts = updated.rows[0].attempts
+
+      if (attempts >= 5) {
+
+        return res.status(400).json({
+          error: 'Too many incorrect attempts.'
+        })
+
+      }
+
+      return res.status(400).json({
+        error: `Invalid OTP. ${5 - attempts} attempt(s) remaining.`
+      })
+
+    }
+
+    res.json({
+      success: true
+    })
+
+  } catch (err) {
+
+    res.status(500).json({
+      error: err.message
+    })
+
+  }
+
+})// Reset Password
+router.post('/reset-password', async (req, res) => {
+
+  const { email, password } = req.body
+
+  try {
+
+    const passwordHash = await bcrypt.hash(password, 12)
+
+    const result = await pool.query(
+      `UPDATE users
+       SET password_hash = $1
+       WHERE email = $2`,
+      [passwordHash, email]
+    )
+
+    if (result.rowCount === 0) {
+      return res.status(400).json({
+        error: 'User not found'
+      })
+    }
+
+    await pool.query(
+      'DELETE FROM password_resets WHERE email = $1',
+      [email]
+    )
+
+    res.json({
+      success: true,
+      message: 'Password updated successfully'
     })
 
   } catch (err) {
