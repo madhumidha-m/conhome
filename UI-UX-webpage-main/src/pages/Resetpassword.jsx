@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import './Authcommon.css'
 
-export default function ResetPassword() {
+export default function Resetpassword() {
 
   const navigate = useNavigate()
   const location = useLocation()

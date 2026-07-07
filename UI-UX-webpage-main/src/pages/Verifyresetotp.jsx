@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import './Authcommon.css'
 
-export default function VerifyResetOTP() {
+export default function VerifyresetOTP() {
 
     const location = useLocation()
     const navigate = useNavigate()

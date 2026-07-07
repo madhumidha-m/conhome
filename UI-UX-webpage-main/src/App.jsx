@@ -17,7 +17,7 @@ import Graphs from './pages/Graphs'
 import VerifyOTP from './pages/VerifyOTP'
 import Forgotpassword from './pages/Forgotpassword'
 import VerifyresetOTP from './pages/VerifyresetOTP'
-import ResetPassword from './pages/ResetPassword'
+import Resetpassword from './pages/Resetpassword'
 
 function PrivateRoute({ children }) {
   const { user } = useAuth()
@@ -31,7 +31,7 @@ function AppRoutes() {
       <Route path="/login" element={user ? <Navigate to="/dashboard" replace /> : <Auth />} />
       <Route path="/forgot-password" element={<Forgotpassword />} />
       <Route path="/verify-reset-otp"element={<VerifyresetOTP />}/>
-      <Route path="/reset-password"element={<ResetPassword />}/>
+      <Route path="/reset-password"element={<Resetpassword />}/>
       <Route path="/verify-otp" element={<VerifyOTP />} />
       <Route path="/" element={<PrivateRoute><Layout /></PrivateRoute>}>
         <Route index element={<Navigate to="/dashboard" replace />} />
