@@ -1,4 +1,11 @@
-/* ---------- PAGE ---------- */
+html{
+    color-scheme: light;
+}
+
+.forgot-page *{
+    color-scheme: light !important;
+}
+/* ---------- Global ---------- */
 
 *{
     margin:0;
@@ -11,66 +18,82 @@ body{
     margin:0;
 }
 
+/* ---------- Page ---------- */
+
 .forgot-page{
 
-    width:100%;
     min-height:100vh;
 
     display:flex;
-    justify-content:center;
-    align-items:center;
 
-    background:linear-gradient(135deg,#0f172a,#1e3a8a,#2563eb);
+    justify-content:center;
+
+    align-items:center;
 
     padding:20px;
 
+    background:linear-gradient(135deg,#e2e4e6f1 0%, #363636 50%, #a7adad 100%);
+
 }
 
-/* ---------- CARD ---------- */
+/* ---------- Card ---------- */
 
 .forgot-card{
 
-    width:420px;
+    width:430px;
     max-width:100%;
 
-    background:white;
+    background:linear-gradient(160deg,#f5f8f7 0%,#707575 100%);
+
+    border-radius:22px;
 
     padding:40px;
 
-    border-radius:18px;
-
-    box-shadow:0 15px 40px rgba(0,0,0,.18);
+    box-shadow:0 8px 40px rgba(0,0,0,.15);
 
 }
 
-/* ---------- HEADINGS ---------- */
+/* ---------- Logo ---------- */
 
 .forgot-card h1{
 
-    color:#2563eb;
-    font-size:32px;
     text-align:center;
+
+    color:#1e1e2e;
+
+    font-size:32px;
+
     margin-bottom:8px;
 
 }
 
+/* ---------- Heading ---------- */
+
 .forgot-card h2{
 
     text-align:center;
+
+    color:#0c0b0b;
+
     margin-bottom:12px;
-    color:#111827;
 
 }
+
+/* ---------- Paragraph ---------- */
 
 .forgot-card p{
 
     text-align:center;
-    color:#6b7280;
-    margin-bottom:20px;
+
+    color:#474545;
+
+    margin-bottom:18px;
+
+    line-height:1.6;
 
 }
 
-/* ---------- EMAIL ---------- */
+/* ---------- Email ---------- */
 
 .forgot-card b{
 
@@ -78,111 +101,125 @@ body{
 
     text-align:center;
 
-    color:#2563eb;
+    color:#414343;
 
-    margin-bottom:25px;
+    margin-bottom:22px;
 
 }
 
-/* ---------- INPUT ---------- */
+/* ---------- Input ---------- */
 
 .forgot-card input{
 
     width:100%;
 
-    padding:14px;
-
-    border:1px solid #d1d5db;
-
-    border-radius:10px;
+    padding:13px 16px;
 
     margin-bottom:18px;
 
+    border:1.5px solid #e0e0e0;
+
+    border-radius:10px;
+
     outline:none;
 
-    transition:.25s;
+    background:#fff;
 
-    font-size:15px;
+    color:#3d3d3d;
+
+    font-size:14px;
+
+    transition:.25s;
 
 }
 
 .forgot-card input:focus{
 
-    border-color:#2563eb;
-
-    box-shadow:0 0 0 3px rgba(37,99,235,.15);
+    border-color:#404040;
 
 }
 
-/* ---------- BUTTON ---------- */
+/* ---------- Buttons ---------- */
 
 .forgot-card button{
 
     width:100%;
 
-    padding:14px;
+    padding:13px;
 
     border:none;
 
-    border-radius:10px;
+    border-radius:12px;
 
-    background:#2563eb;
+    background:#383a3a;
 
     color:white;
 
-    font-size:16px;
+    font-size:15px;
+
+    font-weight:600;
 
     cursor:pointer;
 
-    transition:.3s;
+    transition:.25s;
 
-    margin-top:10px;
+    margin-top:8px;
 
 }
 
 .forgot-card button:hover{
 
-    background:#1d4ed8;
+    background:#213639;
 
 }
 
-/* ---------- BACK BUTTON ---------- */
+/* ---------- Back Button ---------- */
 
 .back{
 
-    background:#f3f4f6 !important;
+    background:#d9d9d9 !important;
 
-    color:#111827 !important;
+    color:#1e1e2e !important;
 
 }
 
 .back:hover{
 
-    background:#e5e7eb !important;
+    background:#c8c8c8 !important;
 
 }
 
-/* ---------- ERROR ---------- */
+/* ---------- Error ---------- */
 
 .error{
 
-    color:red;
+    margin-top:8px;
+
+    margin-bottom:8px;
+
+    color:#dc3232;
+
+    background:rgba(220,50,50,.08);
+
+    border:1px solid rgba(220,50,50,.2);
+
+    padding:10px;
+
+    border-radius:10px;
 
     text-align:center;
-
-    margin-bottom:12px;
 
     font-size:14px;
 
 }
 
-/* ---------- MOBILE ---------- */
+/* ---------- Mobile ---------- */
 
-@media(max-width:500px){
+@media(max-width:600px){
 
     .forgot-card{
 
-        padding:30px 22px;
+        padding:28px 22px;
 
     }
 

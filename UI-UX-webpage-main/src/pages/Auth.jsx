@@ -156,7 +156,7 @@ const handleSubmit = async (e) => {
       style={{
         border: 'none',
         background: 'none',
-        color: '#2563eb',
+        color: '#2e2e2f',
         cursor: 'pointer',
         fontSize: '14px'
       }}
