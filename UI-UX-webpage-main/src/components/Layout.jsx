@@ -4,14 +4,16 @@ import Sidebar from './Sidebar'
 import styles from './Layout.module.css'
 import {
   LayoutDashboard, DoorOpen, Lightbulb,
-  Users, Settings
+  Users, Settings,Bot, Bell
 } from 'lucide-react'
 
 const BOTTOM_NAV = [
   { to: '/stats',        icon: LayoutDashboard, label: 'Home' },
   { to: '/rooms',   icon: DoorOpen,        label: 'Rooms' },
  { to: '/appliances', icon: Lightbulb, label: 'Appliances' },
+  { to: '/automation',    icon: Bot,             label: 'Automation' },
   { to: '/members', icon: Users,           label: 'Members' },
+   { to: '/notifications', icon: Bell,            label: 'Alerts' },
   { to: '/settings',icon: Settings,        label: 'Settings' },
 ]
 

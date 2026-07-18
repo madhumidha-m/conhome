@@ -18,6 +18,7 @@ import VerifyOTP from './pages/VerifyOTP'
 import Forgotpassword from './pages/Forgotpassword'
 import VerifyresetOTP from './pages/VerifyresetOTP'
 import Resetpassword from './pages/Resetpassword'
+import Automation from './pages/Automation'
 
 function PrivateRoute({ children }) {
   const { user } = useAuth()
@@ -39,6 +40,7 @@ function AppRoutes() {
         <Route path="rooms" element={<Rooms />} />
         <Route path="rooms/:roomId" element={<RoomDetail />} />
         <Route path="appliances" element={<Appliances />} />
+        <Route path="automation" element={<Automation />} />
         <Route path="stats" element={<Stats />} />
         <Route path="members" element={<Members />} />
         <Route path="settings" element={<Settings />} />

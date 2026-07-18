@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import './Authcommon.css'
+import { API } from "../config";
 
 export default function Resetpassword() {
 
@@ -33,7 +34,7 @@ export default function Resetpassword() {
     try {
 
       const res = await fetch(
-        'http://10.200.163.50:4000/api/auth/reset-password',
+        `${API}/auth/reset-password`,
         {
           method: 'POST',
           headers: {

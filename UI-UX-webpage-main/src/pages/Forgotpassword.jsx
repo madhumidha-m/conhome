@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './Authcommon.css'
+import { API } from "../config";
 
 export default function Forgotpassword() {
 
@@ -21,8 +22,8 @@ export default function Forgotpassword() {
     setError("")
     try {
 
-  const res = await fetch(
-    'http://10.200.163.50:4000/api/auth/forgot-password',
+ const res = await fetch(
+  `${API}/auth/forgot-password`,
     {
       method: 'POST',
       headers: {

@@ -4,13 +4,14 @@ import { useHome } from '../context/HomeContext'
 import styles from './Sidebar.module.css'
 import {
   LayoutDashboard, DoorOpen, Lightbulb,
-  Users, Bell, Settings, BarChart2, X
+  Users, Bell, Settings, BarChart2, Bot, X
 } from 'lucide-react'
 
 const NAV = [
   { to: '/',              icon: LayoutDashboard, label: 'Home' },
   { to: '/rooms',         icon: DoorOpen,        label: 'Rooms' },
   { to: '/appliances',       icon: Lightbulb,       label: 'Appliances' },
+  { to: '/automation',    icon: Bot,             label: 'Automation' },
   { to: '/members',       icon: Users,           label: 'Members' },
   { to: '/notifications', icon: Bell,            label: 'Alerts' },
   { to: '/settings',      icon: Settings,        label: 'Settings' },
@@ -61,4 +62,4 @@ const savedUser = JSON.parse(localStorage.getItem('smarthome_user') || '{}')
       </div>
     </aside>
   )
-}
+} 

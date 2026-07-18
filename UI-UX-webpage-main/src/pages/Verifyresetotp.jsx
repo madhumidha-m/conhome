@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import './Authcommon.css'
+import { API } from "../config";
 
 export default function VerifyresetOTP() {
 
@@ -26,7 +27,7 @@ export default function VerifyresetOTP() {
         try {
 
             const res = await fetch(
-                'http://10.200.163.50:4000/api/auth/verify-reset-otp',
+  `${API}/auth/verify-reset-otp`,
                 {
                     method: 'POST',
                     headers: {

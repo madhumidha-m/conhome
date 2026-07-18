@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import './VerifyOTP.css'
+import { API } from "../config";
 
 export default function VerifyOTP() {
 
@@ -33,7 +34,7 @@ export default function VerifyOTP() {
         try{
 
             const res = await fetch(
-                'http://10.200.163.50:4000/api/auth/verify-otp',
+  `${API}/auth/verify-otp`,
                 {
                     method:'POST',
                     headers:{
@@ -80,7 +81,7 @@ navigate('/dashboard')
   try {
 
     const res = await fetch(
-      'http://10.200.163.50:4000/api/auth/resend-otp',
+  `${API}/auth/resend-otp`,
       {
         method: 'POST',
         headers: {

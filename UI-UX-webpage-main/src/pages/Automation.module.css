@@ -1,0 +1,247 @@
+.container {
+  padding: 30px;
+}
+
+.card {
+  max-width: 700px;
+  margin: auto;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.title{
+
+    font-size:44px;
+    font-weight:700;
+    text-align:center;
+    color:#1f2937;
+
+    margin-bottom:35px;
+
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+}
+
+.formGroup label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.input,
+.select {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  font-size: 15px;
+  outline: none;
+  transition: 0.2s;
+  background: white;
+}
+
+.input:focus,
+.select:focus {
+  border-color: #3b3b3d;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.saveBtn {
+  margin-top: 20px;
+  width: 100%;
+  padding: 14px;
+  background: #374151;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.saveBtn:hover {
+  background: #111827;
+}
+
+.rules {
+  margin-top: 40px;
+}
+
+.ruleCard{
+
+    background:white;
+    border-radius:18px;
+    padding:22px;
+    margin-top:20px;
+
+    border:1px solid #e5e7eb;
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,.06);
+
+}
+
+.ruleTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ruleTitle {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.ruleText{
+
+    margin-top:10px;
+
+    font-size:18px;
+
+    color:#4b5563;
+
+}
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.editBtn,
+.deleteBtn,
+.toggleBtn {
+  border: none;
+  padding: 8px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.editBtn {
+  background: #5c5d5d;
+  color: white;
+}
+
+.deleteBtn {
+  background: #ef4444;
+  color: white;
+}
+
+.toggleBtn {
+  background: #10b981;
+  color: white;
+}
+
+@media (max-width:768px){
+
+  .container{
+    padding:15px;
+  }
+
+  .card{
+    padding:20px;
+  }
+
+  .row{
+    grid-template-columns:1fr;
+  }
+
+}
+/* ===========================
+   Dark Theme
+=========================== */
+
+@media (prefers-color-scheme: dark) {
+
+  .container{
+      color:#f3f4f6;
+  }
+
+  .title{
+      color:#ffffff;
+  }
+
+  .card{
+      background:#1f2437;
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:none;
+  }
+
+  .rules h2{
+      color:#ffffff;
+  }
+
+  .rules p{
+      color:#cbd5e1;
+  }
+
+  .ruleCard{
+      background:#2a3045;
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:none;
+  }
+
+  .ruleTitle{
+      color:#ffffff;
+  }
+
+  .ruleText{
+      color:#d1d5db;
+  }
+
+  .select,
+  .input{
+
+      background:#303047;
+      color:#ffffff;
+      border:1px solid rgba(255,255,255,.08);
+
+  }
+
+  .select option{
+
+      background:#303047;
+      color:#ffffff;
+
+  }
+
+  .saveBtn{
+
+      background:#4b5563;
+      color:white;
+
+  }
+
+  .saveBtn:hover{
+
+      background:#374151;
+
+  }
+
+  .editBtn{
+
+      background:#4b5563;
+      color:white;
+
+  }
+
+  .deleteBtn{
+
+      background:#ef4444;
+      color:white;
+
+  }
+
+}
