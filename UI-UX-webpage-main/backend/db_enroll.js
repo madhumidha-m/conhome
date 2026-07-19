@@ -5,7 +5,7 @@ require('dotenv').config()
 const pool = new Pool({
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
-  database: 'enroll_db',
+  database: 'enrll_db',
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
 })

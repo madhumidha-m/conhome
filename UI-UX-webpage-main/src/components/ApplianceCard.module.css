@@ -22,13 +22,13 @@
 .toggle {
   width: 44px; height: 24px;
   border-radius: 12px;
-  background: #6b7280;
+  background: #ddd;
   border: none;
   position: relative;
   transition: background 0.25s;
   cursor: pointer;
 }
-.toggle.on 
+.toggleOn { background: var(--accent); }
 
 .knob {
   position: absolute;
